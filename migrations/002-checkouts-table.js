@@ -1,6 +1,6 @@
 exports.up = async function up(sql) {
     await sql`
-        create table if not exists user_book (
+        create table if not exists checkouts (
             id serial primary key,
             user_id int,
             book_id int,
@@ -9,16 +9,16 @@ exports.up = async function up(sql) {
     `
 
     await sql`
-        alter table user_book add foreign key (user_id) references users (id);    
+        alter table checkouts add foreign key (user_id) references users (id);    
     `
 
     await sql`
-        alter table user_book add foreign key (book_id) references books (id);    
+        alter table checkouts add foreign key (book_id) references books (id);    
     `
 }
 
 exports.down = async function down(sql) {
     await sql`
-        drop table if exists user_book
+        drop table if exists checkouts
     `
 }
