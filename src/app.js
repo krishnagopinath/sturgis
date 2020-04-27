@@ -13,7 +13,6 @@ app.use(compression())
 
 app.use('/api', apiRouter)
 
-// Global error handling
 app.use(errorHandler)
 
 module.exports = app
