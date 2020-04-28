@@ -60,10 +60,40 @@ async function checkIfDbExists(t) {
 }
 
 /**
+ * Trancates tables
+ * @param {*} t
+ */
+async function truncateDb(t) {
+    try {
+        const tables = (
+            await sql`
+                select 
+                    table_name 
+                from information_schema.tables 
+                where table_schema='public' 
+                and table_name != 'migrations';
+            `
+        ).map(t => t.table_name)
+
+        await sql`
+            truncate table ${sql(tables)}
+            restart identity;
+        `
+    } catch (error) {
+        t.fail(`Truncate failed`)
+        printAndKill(error)
+    }
+}
+
+/**
  * Shorthand function that sets up DB related setup and teardown
  */
 exports.testDbSetup = async function testDbSetup() {
-    test.before(checkIfDbExists)
-    test.beforeEach(migrateDb)
-    test.afterEach.always(rollbackDb)
+    test.before(async t => {
+        await checkIfDbExists(t)
+        await migrateDb(t)
+    })
+
+    test.afterEach.always(truncateDb)
+    test.after.always(rollbackDb)
 }

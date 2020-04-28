@@ -1,6 +1,8 @@
 const test = require('ava')
 
-const userModel = require('../user-model')
+const userData = require('../data/users')
+
+const { sql } = require('../../common/utils/index')
 const { USER_ROLES } = require('../user-constants')
 
 /**
@@ -8,7 +10,10 @@ const { USER_ROLES } = require('../user-constants')
  */
 exports.testUserSetup = function testUserSetup() {
     test.beforeEach(async t => {
-        const users = await userModel.getAll()
+        const users = await sql`
+            insert into users ${sql(userData, 'name', 'role')}
+            returning *;
+        `
 
         t.context.users = {
             librarian: users.find(u => u.role === USER_ROLES.LIBRARIAN),

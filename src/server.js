@@ -8,7 +8,7 @@ if (!validateEnvVars()) {
     process.exit(9)
 }
 
-console.info('Starting the Matterwiki server..')
+console.info('Starting the Sturgis API server..')
 
 app.listen(process.env.SERVER_PORT, error => {
     if (error) {

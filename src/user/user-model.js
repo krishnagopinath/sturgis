@@ -1,10 +1,11 @@
 const { sql } = require('../common/utils/index')
 
-module.exports = {
-    getAll() {
-        return sql`
+const userModel = {
+    async getAll() {
+        const users = await sql`
             select * from users;
         `
+        return users
     },
 
     async fetchById(id) {
@@ -15,3 +16,5 @@ module.exports = {
         return user
     },
 }
+
+module.exports = userModel

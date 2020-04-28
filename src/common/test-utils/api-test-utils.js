@@ -1,5 +1,6 @@
 const request = require('supertest')
 
-const app = require('../../app')
-
-exports.apiClient = request(app)
+exports.getApiClient = function getApiClient() {
+    // Internal `require` because we'd like `app` to be invoked when this is run.
+    return request(require('../../app'))
+}

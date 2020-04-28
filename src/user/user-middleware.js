@@ -25,7 +25,6 @@ exports.parseUser = async function parseUser(req, res, next) {
         if (!user) return next(invalidUserErr)
 
         req.user = user
-
         return next()
     } catch (err) {
         return next(invalidUserErr)
