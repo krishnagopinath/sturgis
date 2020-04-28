@@ -69,7 +69,7 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "http-status-codes": "^1.4.0",
-    "node-isbn": "^1.5.0",
+    "node-isbn": "krishnagopinath/node-isbn#fix-security-vulns",
     "postgres": "^1.0.2"
   }
 }
