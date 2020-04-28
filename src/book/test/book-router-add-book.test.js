@@ -48,7 +48,7 @@ test('(400) isbn not found', async t => {
 })
 
 test('(201) book added', async t => {
-    const isbn = '061871166X'
+    const isbn = '0553499114'
     const expectedBookInfo = {
         isbn,
         author: 'Amitav Ghosh',
@@ -70,8 +70,8 @@ test('(201) book added', async t => {
 
     t.truthy(bookFromDb)
     t.deepEqual(
-        pick(bookFromDb, ['isbn', 'author', 'name']),
-        pick(expectedBookInfo, ['isbn', 'author', 'name']),
+        pick(bookFromDb, 'isbn', 'author', 'name'),
+        pick(expectedBookInfo, 'isbn', 'author', 'name'),
     )
 
     t.truthy(bookFromDb.created_at)

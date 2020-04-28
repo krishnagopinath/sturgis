@@ -1,4 +1,6 @@
-const got = require('got')
+const isbnService = require('node-isbn')
+
+const { PROVIDER_NAMES } = isbnService
 
 // 📝 About requiring this util
 // Some care must be taken with requiring this module
@@ -9,32 +11,24 @@ const got = require('got')
 // ✅ const bookUtils = require('./book-utils')
 // 👉 bookUtils.getInfoByIsbn()
 
-exports.getInfoByIsbn = async function getInfoByIsbn(isbn) {
-    if (!isbn || typeof isbn !== 'string') return null
+exports.getInfoByIsbn = async function getInfoByIsbn(isbnNo) {
+    if (!isbnNo || typeof isbnNo !== 'string') return null
 
-    const isbnKey = `ISBN:${isbn}`
+    const book = await isbnService
+        .provider([PROVIDER_NAMES.OPENLIBRARY, PROVIDER_NAMES.GOOGLE])
+        .resolve(isbnNo)
+        .catch(() => {
+            // Not found error, send out `null`
+            return null
+        })
 
-    // TODO: Replace with `node-isbn` once https://github.com/palmerabollo/node-isbn/pull/12 gets merged
-    const {
-        body,
-    } = await got(
-        `https://openlibrary.org/api/books?bibkeys=${isbnKey}&jscmd=data&format=json`,
-        { responseType: 'json' },
-    )
-
-    const book = body ? body[isbnKey] : null
     if (!book) return null
 
-    const { title, subtitle, authors } = book
-
-    const name = title + (subtitle ? `- ${subtitle}` : '')
-    const author = Array.isArray(authors)
-        ? authors.map(a => a.name).join(', ')
-        : null
+    const { title, authors } = book
 
     return {
-        isbn,
-        name,
-        author,
+        isbn: isbnNo,
+        name: title,
+        author: authors.join(', '),
     }
 }
