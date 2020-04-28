@@ -39,4 +39,27 @@ module.exports = {
         `
         return book
     },
+
+    /**
+     * Deletes book by id
+     * @param {number} id
+     */
+    async deleteById(id) {
+        return sql`
+            delete from books where id = ${sql(id)}
+        `
+    },
+
+    async insertMany(bookData, user) {
+        const bookRows = bookData.map(book => ({
+            ...book,
+            created_by_id: user.id,
+        }))
+
+        const books = await sql`
+            insert into books ${sql(bookRows)}
+            returning *;
+        `
+        return books
+    },
 }

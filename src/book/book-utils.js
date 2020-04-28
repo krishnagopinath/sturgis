@@ -13,6 +13,8 @@ exports.getInfoByIsbn = async function getInfoByIsbn(isbn) {
     if (!isbn || typeof isbn !== 'string') return null
 
     const isbnKey = `ISBN:${isbn}`
+
+    // TODO: Replace with `node-isbn` once https://github.com/palmerabollo/node-isbn/pull/12 gets merged
     const {
         body,
     } = await got(

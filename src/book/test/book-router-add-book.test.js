@@ -2,32 +2,30 @@ const test = require('ava')
 const sinon = require('sinon')
 const HttpStatus = require('http-status-codes')
 
-const { testDbSetup, getApiClient } = require('../../common/test-utils/index')
-const { testUserSetup } = require('../../user/test/user-test-utils')
+const {
+    testDbSetup,
+    getApiClient,
+    testApiSetup,
+} = require('../../common/test-utils/index')
+const {
+    testUserSetup,
+    testLibrarianRole,
+} = require('../../user/test/user-test-utils')
 
 const { pick } = require('../../common/utils/index')
-const { ERRORS: USER_ERRORS } = require('../../user/user-constants')
 const { ERRORS } = require('../book-constants')
 const bookUtils = require('../book-utils')
 const bookModel = require('../book-model')
 
-const apiUrl = `/api/book/`
-
 testDbSetup()
 testUserSetup()
+testApiSetup('/api/book')
 
-test('(403) forbidden if not librarian', async t => {
-    const res = await getApiClient()
-        .post(apiUrl)
-        .set('x-user-id', t.context.users.members[0].id)
-
-    t.is(res.status, HttpStatus.FORBIDDEN)
-    t.is(res.body.error.code, USER_ERRORS.NO_ACCESS.code)
-})
+testLibrarianRole('post')
 
 test('(400) no isbn', async t => {
     const res = await getApiClient()
-        .post(apiUrl)
+        .post(t.context.apiUrl)
         .set('x-user-id', t.context.users.librarian.id)
         .send({ isbn: null })
 
@@ -39,7 +37,7 @@ test('(400) isbn not found', async t => {
     sinon.stub(bookUtils, 'getInfoByIsbn').returns(null)
 
     const res = await getApiClient()
-        .post(apiUrl)
+        .post(t.context.apiUrl)
         .set('x-user-id', t.context.users.librarian.id)
         .send({ isbn: 'gibberish-isbn' })
 
@@ -61,7 +59,7 @@ test('(201) book added', async t => {
     sinon.stub(bookUtils, 'getInfoByIsbn').returns(expectedBookInfo)
 
     const res = await getApiClient()
-        .post(apiUrl)
+        .post(t.context.apiUrl)
         .set('x-user-id', librarianId)
         .send({ isbn })
 

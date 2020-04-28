@@ -22,3 +22,12 @@ exports.addBook = async function addBook(req, res, next) {
         next(error)
     }
 }
+
+exports.removeBook = async function removeBook(req, res, next) {
+    try {
+        await bookModel.deleteById(req.item.id)
+        res.status(HttpStatus.OK).end()
+    } catch (error) {
+        next(error)
+    }
+}

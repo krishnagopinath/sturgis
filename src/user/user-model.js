@@ -15,6 +15,14 @@ const userModel = {
 
         return user
     },
+
+    async insertMany(userData) {
+        const users = await sql`
+            insert into users ${sql(userData, 'name', 'role')}
+            returning *;
+        `
+        return users
+    },
 }
 
 module.exports = userModel
