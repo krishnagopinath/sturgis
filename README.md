@@ -11,5 +11,3 @@
 
 https://dbdiagram.io/d/5ea4b94539d18f5553fe35ed
 
-<iframe width="560" height="315" src='https://dbdiagram.io/embed/5ea4b94539d18f5553fe35ed'> </iframe>
-
