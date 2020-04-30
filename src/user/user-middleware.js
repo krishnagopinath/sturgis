@@ -1,6 +1,9 @@
 const HttpStatus = require('http-status-codes')
 
-const { makeHttpError } = require('../common/utils/index')
+const {
+    makeHttpError,
+    makeHttpForbiddenError,
+} = require('../common/utils/index')
 
 const userModel = require('./user-model')
 const { ERRORS, USER_ROLES } = require('./user-constants')
@@ -10,7 +13,7 @@ const invalidUserErr = makeHttpError(
     ERRORS.INVALID_USER,
 )
 
-const invalidRoleError = makeHttpError(HttpStatus.FORBIDDEN, ERRORS.NO_ACCESS)
+const invalidRoleError = makeHttpForbiddenError(ERRORS.NO_ACCESS)
 
 /**
  * Gets user information based on header and sets it up on `req.user`

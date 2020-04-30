@@ -30,7 +30,7 @@ test('(404) book not found', async t => {
     t.is(res.status, HttpStatus.NOT_FOUND)
 })
 
-test.todo('(405) cannot remove checked out book')
+test.todo('(403) cannot remove checked out book')
 
 test('(200) book deleted', async t => {
     const res = await getApiClient()

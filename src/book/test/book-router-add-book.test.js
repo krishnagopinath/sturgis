@@ -63,9 +63,18 @@ test('(201) book added', async t => {
         .set('x-user-id', librarianId)
         .send({ isbn })
 
-    t.is(res.status, HttpStatus.CREATED)
-    t.truthy(res.body)
+    sinon.restore()
 
+    t.is(res.status, HttpStatus.CREATED)
+
+    // Expected fields
+    t.truthy(res.body.id)
+    t.deepEqual(
+        Object.keys(res.body).sort(),
+        ['id', 'isbn', 'author', 'name', 'created_by_id', 'created_at'].sort(),
+    )
+
+    // Data accuracy
     const bookFromDb = await bookModel.getById(res.body.id)
 
     t.truthy(bookFromDb)
@@ -76,11 +85,4 @@ test('(201) book added', async t => {
 
     t.truthy(bookFromDb.created_at)
     t.is(bookFromDb.created_by_id, librarianId)
-
-    t.deepEqual(
-        Object.keys(res.body).sort(),
-        ['id', 'isbn', 'author', 'name', 'created_by_id', 'created_at'].sort(),
-    )
-
-    sinon.restore()
 })

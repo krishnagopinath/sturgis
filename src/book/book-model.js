@@ -62,4 +62,14 @@ module.exports = {
         `
         return books
     },
+
+    /**
+     * Gets book by isbn
+     * @param {string} isbn
+     */
+    async getAllAvailableByIsbn(isbn) {
+        return sql`
+            select * from books where isbn = ${isbn}
+        `
+    },
 }

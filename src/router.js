@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const { parseUser, librarianOnly } = require('./user/user-middleware')
 
 const bookRouter = require('./book/book-router')
+const checkoutRouter = require('./checkout/checkout-router')
 
 module.exports = Router()
     .get('/', (req, res) => {
@@ -14,3 +15,4 @@ module.exports = Router()
     // Parse user info
     .use(parseUser)
     .use('/book', librarianOnly, bookRouter)
+    .use('/checkout', checkoutRouter)
