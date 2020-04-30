@@ -50,6 +50,13 @@ module.exports = {
         `
     },
 
+    /**
+     * Bulk insert
+     *
+     * ⚠️ Unsafe, used only in tests!
+     * @param {*} bookData
+     * @param {*} user
+     */
     async insertMany(bookData, user) {
         const bookRows = bookData.map(book => ({
             ...book,
@@ -64,12 +71,26 @@ module.exports = {
     },
 
     /**
-     * Gets book by isbn
+     * Gets available books by isbn
      * @param {string} isbn
      */
     async getAllAvailableByIsbn(isbn) {
         return sql`
-            select * from books where isbn = ${isbn}
+            -- get book ids that are already checked out
+            with checked_out_ids as(
+                select books.id
+                from books 
+                inner join checkouts on checkouts.book_id = books.id 
+                where books.isbn = ${isbn}
+            )
+            -- exclude those ids and return filtered list
+            -- these are the "available" books
+            select * 
+            from books
+            where isbn = ${isbn}
+            and books.id not in (
+                select id from checked_out_ids
+            );
         `
     },
 }

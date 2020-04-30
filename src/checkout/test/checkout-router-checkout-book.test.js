@@ -67,6 +67,24 @@ test('(400) book not found in library', async t => {
     t.is(res.body.error.code, ERRORS.BOOK_NOT_IN_LIBRARY.code)
 })
 
+test('(400) all copies checked out', async t => {
+    // Checkout all copies of a book
+    const { users, books } = t.context
+    await createCheckout(t, books[0], users.members[0])
+    await createCheckout(t, books[1], users.members[1])
+
+    // Try checking out same book
+    const res = await getApiClient()
+        .post(t.context.apiUrl)
+        .set('x-user-id', t.context.users.members[2].id)
+        .send(getCheckoutPayload(t))
+
+    // Assert that it's not possible
+    // TODO: Must ideally be forbidden, logic must be decoupled in `checkout-middleware`
+    t.is(res.status, HttpStatus.BAD_REQUEST)
+    t.is(res.body.error.code, ERRORS.BOOK_NOT_IN_LIBRARY.code)
+})
+
 test('(403) exceeded checkout limit (3)', async t => {
     // Create 3 checkouts
     await createCheckouts(t)
@@ -104,8 +122,8 @@ test('(403) overdue books (> 2 weeks)', async t => {
     t.is(res.body.error.code, ERRORS.OVERDUE_BOOKS.code)
 })
 
-test('(403) same book (isbn)', async t => {
-    // Create checkout
+test('(403) checking out multiple copies of book', async t => {
+    // Create checkout for user
     await createCheckout(t, t.context.books[0])
 
     // Try checking out same book
@@ -117,23 +135,6 @@ test('(403) same book (isbn)', async t => {
     // Assert that it's not possible
     t.is(res.status, HttpStatus.FORBIDDEN)
     t.is(res.body.error.code, ERRORS.BOOK_ALREADY_CHECKED_OUT.code)
-})
-
-test('(403) all copies checked out', async t => {
-    // Checkout all copies of a book
-    const { users, books } = t.context
-    await createCheckout(t, books[0], users.members[0])
-    await createCheckout(t, books[0], users.members[1])
-
-    // Try checking out same book
-    const res = await getApiClient()
-        .post(t.context.apiUrl)
-        .set('x-user-id', t.context.users.members[2].id)
-        .send(getCheckoutPayload(t))
-
-    // Assert that it's not possible
-    t.is(res.status, HttpStatus.FORBIDDEN)
-    t.is(res.body.error.code, ERRORS.BOOK_UNAVAILABLE.code)
 })
 
 test('(201) checkout created', async t => {

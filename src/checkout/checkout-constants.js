@@ -1,7 +1,10 @@
 exports.ERRORS = {
     BOOK_NOT_IN_LIBRARY: {
         code: 'BOOK_NOT_IN_LIBRARY',
-        message: 'No book with this ISBN was found',
+        message: `No book with this ISBN was found in the library. There may be reasons for this: 
+            * It may not be available in the library 
+            * All copies of this book have been checked out.
+        `,
     },
     CHECKOUT_LIMIT_EXCEEDED: {
         code: 'CHECKOUT_LIMIT_EXCEEDED',
@@ -18,9 +21,5 @@ exports.ERRORS = {
     INVALID_ISBN: {
         code: 'INVALID_ISBN',
         message: 'ISBN must be defined and valid',
-    },
-    BOOK_UNAVAILABLE: {
-        code: 'BOOK_UNAVAILABLE',
-        message: 'All copies of this book have been checked out',
     },
 }

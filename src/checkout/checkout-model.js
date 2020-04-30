@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 const { sql } = require('../common/utils/index')
 
+const relatedBookCols = ['id', 'isbn', 'author', 'name']
+
 module.exports = {
     /**
      * Creates a checkout
@@ -33,13 +35,9 @@ module.exports = {
             from checkout
             inner join (
                 -- 😢 setup subquery so row_to_json could be used
-                select 
-                    id, 
-                    isbn,
-                    author,
-                    name
+                select ${sql(relatedBookCols)}
                 from books
-            ) as books on books.id = checkout.book_id
+            ) as books on books.id = checkout.book_id;
         `
 
         return createdCheckout
@@ -92,10 +90,27 @@ module.exports = {
      */
     async getAllByUser(user) {
         return sql`
-            select * from checkouts where created_by_id = ${sql(user.id)}
+            select 
+                *,
+                row_to_json(books.*) as book 
+            from checkouts 
+            inner join (
+                -- 😢 setup subquery so row_to_json could be used
+                select ${sql(relatedBookCols)}
+                from books
+            ) as books on books.id = checkouts.book_id
+            where checkouts.created_by_id = ${sql(user.id)}
         `
     },
 
+    /**
+     * Bulk insert
+     *
+     * ⚠️ Unsafe, used only in tests!
+     *
+     * @param {*} books
+     * @param {*} user
+     */
     async insertMany(books, user) {
         const checkoutRows = books.map(b => ({
             book_id: b.id,

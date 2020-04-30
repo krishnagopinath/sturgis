@@ -28,10 +28,10 @@ function hasOverdue(checkouts) {
 /**
  * Checks if a copy of the book was already checked out
  * @param {*} checkouts
- * @param {*} bookId
+ * @param {*} isbn
  */
-function alreadyCheckedOut(checkouts, bookId) {
-    return !!checkouts.find(c => c.book_id === bookId)
+function alreadyCheckedOutByUser(checkouts, isbn) {
+    return !!checkouts.find(c => c.book.isbn === isbn)
 }
 
 exports.validateCheckout = async function validateCheckout(req, res, next) {
@@ -40,18 +40,21 @@ exports.validateCheckout = async function validateCheckout(req, res, next) {
         if (!isbn) return next(isbnInvalidErr)
 
         // User can checkout a max of 3 books
-        const checkouts = await checkoutModel.getAllByUser(req.user)
-        if (checkouts.length >= 3) return next(checkoutLimitErr)
+        const checkoutsByUser = await checkoutModel.getAllByUser(req.user)
+        if (checkoutsByUser.length >= 3) return next(checkoutLimitErr)
 
         // User cannot have overdue books (> 2 weeks)
-        if (hasOverdue(checkouts)) return next(overdueBooksErr)
+        if (hasOverdue(checkoutsByUser)) return next(overdueBooksErr)
 
-        // Book with ISBN must exist in the system, for it to be checked out
+        // TODO: This could probably be broken down into 2 separate queries
+        // This block tries to validate the following rules:
+        // - ISBN must exist in the system
+        // - If the book exists, copies must be available
         const books = await bookModel.getAllAvailableByIsbn(isbn)
         if (!books.length) return next(bookNotInLibErr)
 
         // Book must not already be checked out by the user
-        if (alreadyCheckedOut(checkouts, books[0].id)) {
+        if (alreadyCheckedOutByUser(checkoutsByUser, books[0].isbn)) {
             return next(alreadyCheckedOutErr)
         }
 
