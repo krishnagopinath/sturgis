@@ -8,7 +8,6 @@ exports.addCheckout = async function addCheckout(req, res, next) {
         const checkout = await checkoutModel.createAndFetch(book, req.user)
         res.status(HttpStatus.OK).json(checkout)
     } catch (error) {
-        console.log(error)
         next(error)
     }
 }
