@@ -46,7 +46,6 @@ exports.bookData = [
         author: 'Charles Martin',
         isbn: '0785230912',
     },
-
     {
         name: 'Great Expectations (Penguin Classics)',
         author: 'Charles Dickens',

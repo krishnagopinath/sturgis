@@ -11,3 +11,12 @@ exports.addCheckout = async function addCheckout(req, res, next) {
         next(error)
     }
 }
+
+exports.getCheckouts = async function getCheckouts(req, res, next) {
+    try {
+        const checkouts = await checkoutModel.getAllByUser(req.user)
+        res.status(HttpStatus.OK).json(checkouts)
+    } catch (error) {
+        next(error)
+    }
+}

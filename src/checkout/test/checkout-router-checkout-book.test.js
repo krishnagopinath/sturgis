@@ -9,11 +9,14 @@ const {
 } = require('../../common/test-utils/index')
 const { testUserSetup } = require('../../user/test/user-test-utils')
 const { testBookSetup } = require('../../book/test/book-test-utils')
-const { createCheckouts, createCheckout } = require('./checkout-test-utils')
+const {
+    createCheckouts,
+    createCheckout,
+    assertCheckoutResponse,
+} = require('./checkout-test-utils')
 
 const { ERRORS } = require('../checkout-constants')
 const checkoutModel = require('../checkout-model')
-const bookModel = require('../../book/book-model')
 
 const getCheckoutPayload = t => ({ isbn: t.context.books[0].isbn })
 
@@ -122,23 +125,5 @@ test('(201) checkout created', async t => {
 
     t.is(res.status, HttpStatus.OK)
 
-    // Expected fields
-    t.truthy(res.body.id)
-    t.deepEqual(
-        Object.keys(res.body).sort(),
-        ['id', 'book', 'created_by_id', 'created_at'].sort(),
-    )
-    t.deepEqual(
-        Object.keys(res.body.book).sort(),
-        ['id', 'isbn', 'author', 'name'].sort(),
-    )
-
-    // Data accuracy
-    const bookFromDb = await bookModel.getById(res.body.book.id)
-    const checkoutFromDb = await checkoutModel.getById(res.body.id)
-
-    t.truthy(bookFromDb)
-    t.truthy(checkoutFromDb)
-    t.is(checkoutFromDb.created_by_id, member.id)
-    t.truthy(checkoutFromDb.created_at)
+    await assertCheckoutResponse(t, res.body, member)
 })

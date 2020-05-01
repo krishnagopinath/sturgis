@@ -101,7 +101,9 @@ module.exports = {
     async getAllByUser(user) {
         return sql`
             select 
-                *,
+                checkouts.id,
+                checkouts.created_by_id,
+                checkouts.created_at,
                 row_to_json(books.*) as book 
             from checkouts 
             inner join (
