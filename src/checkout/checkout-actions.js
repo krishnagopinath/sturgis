@@ -20,3 +20,7 @@ exports.getCheckouts = async function getCheckouts(req, res, next) {
         next(error)
     }
 }
+
+exports.getCheckout = async function getCheckout(req, res, next) {
+    res.status(HttpStatus.OK).json(req.item)
+}

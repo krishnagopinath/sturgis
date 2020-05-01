@@ -49,7 +49,18 @@ module.exports = {
      */
     async getById(id) {
         const [checkout] = await sql`
-            select * from checkouts where id = ${sql(id)}
+            select 
+                checkouts.id,
+                checkouts.created_by_id,
+                checkouts.created_at,
+                row_to_json(books.*) as book 
+            from checkouts 
+            inner join (
+                -- 😢 setup subquery so row_to_json could be used
+                select ${sql(relatedBookCols)}
+                from books
+            ) as books on books.id = checkouts.book_id
+            where checkouts.id = ${sql(id)}
         `
         return checkout
     },

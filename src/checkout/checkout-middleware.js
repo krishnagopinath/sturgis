@@ -1,8 +1,11 @@
+const HttpStatus = require('http-status-codes')
 const { differenceInWeeks } = require('date-fns')
 
 const {
+    makeHttpError,
     makeHttpBadRequestError,
     makeHttpForbiddenError,
+    checkResourceExists,
 } = require('../common/utils/index')
 
 const bookModel = require('../book/book-model')
@@ -16,6 +19,7 @@ const overdueBooksErr = makeHttpForbiddenError(ERRORS.OVERDUE_BOOKS)
 const alreadyCheckedOutErr = makeHttpForbiddenError(
     ERRORS.BOOK_ALREADY_CHECKED_OUT,
 )
+const checkoutNotFoundErr = makeHttpError(HttpStatus.NOT_FOUND)
 
 /**
  * Checks if any checkouts are older than 2 weeks
@@ -53,7 +57,7 @@ exports.validateCheckout = async function validateCheckout(req, res, next) {
         const books = await bookModel.getAllAvailableByIsbn(isbn)
         if (!books.length) return next(bookNotInLibErr)
 
-        // Book must not already be checked out by the user
+        // User must not have checked out another copy of the book
         if (alreadyCheckedOutByUser(checkoutsByUser, books[0].isbn)) {
             return next(alreadyCheckedOutErr)
         }
@@ -63,5 +67,22 @@ exports.validateCheckout = async function validateCheckout(req, res, next) {
         next()
     } catch (error) {
         return next(error)
+    }
+}
+
+exports.doesCheckoutExist = async function doesCheckoutExist(req, res, next) {
+    try {
+        const item = await checkResourceExists(req.params.id, id => {
+            return checkoutModel.getById(id)
+        })
+        if (!item) return next(checkoutNotFoundErr)
+
+        // User 1 does not have permission to view User 2's checkout
+        if (item.created_by_id !== req.user.id) return next(checkoutNotFoundErr)
+
+        req.item = item
+        next()
+    } catch (error) {
+        next(error)
     }
 }

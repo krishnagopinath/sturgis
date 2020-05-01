@@ -19,8 +19,9 @@ const httpErrorCreators = {
 }
 
 module.exports = {
+    ...require('./check-resource-exists'),
+    ...require('./lodash-subs'),
     ...require('./sql'),
     ...require('./validate-env-vars'),
-    ...require('./lodash-subs'),
     ...httpErrorCreators,
 }

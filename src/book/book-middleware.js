@@ -1,10 +1,9 @@
 const HttpStatus = require('http-status-codes')
-
 const {
     makeHttpError,
     makeHttpBadRequestError,
     makeHttpForbiddenError,
-    isNil,
+    checkResourceExists,
 } = require('../common/utils/index')
 
 const checkoutModel = require('../checkout/checkout-model')
@@ -13,19 +12,15 @@ const bookModel = require('./book-model')
 const bookUtils = require('./book-utils')
 const { ERRORS } = require('./book-constants')
 
-const bookNotFoundErr = makeHttpError(HttpStatus.NOT_FOUND)
 const invalidIsbnErr = makeHttpBadRequestError(ERRORS.INVALID_ISBN)
 const checkedOutDeleteErr = makeHttpForbiddenError(ERRORS.BOOK_CHECKED_OUT)
+const bookNotFoundErr = makeHttpError(HttpStatus.NOT_FOUND)
 
-exports.checkBookExists = async function checkBookExists(req, res, next) {
+exports.doesBookExist = async function doesCheckoutExist(req, res, next) {
     try {
-        if (!req.params.id) return next(bookNotFoundErr)
-
-        const id = parseInt(req.params.id, 10)
-        if (Number.isNaN(id)) return next(bookNotFoundErr)
-
-        const item = await bookModel.getById(id)
-        if (isNil(item)) return next(bookNotFoundErr)
+        const queryFn = id => bookModel.getById(id)
+        const item = await checkResourceExists(req.params.id, queryFn)
+        if (!item) return next(bookNotFoundErr)
 
         req.item = item
         next()
