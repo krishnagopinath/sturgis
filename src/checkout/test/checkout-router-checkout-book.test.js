@@ -9,37 +9,13 @@ const {
 } = require('../../common/test-utils/index')
 const { testUserSetup } = require('../../user/test/user-test-utils')
 const { testBookSetup } = require('../../book/test/book-test-utils')
+const { createCheckouts, createCheckout } = require('./checkout-test-utils')
 
 const { ERRORS } = require('../checkout-constants')
 const checkoutModel = require('../checkout-model')
 const bookModel = require('../../book/book-model')
 
 const getCheckoutPayload = t => ({ isbn: t.context.books[0].isbn })
-
-async function createCheckouts(t, bookList) {
-    // Create 3 checkouts for member 1
-    const {
-        users: { members },
-        books,
-    } = t.context
-    const checkouts = await checkoutModel.insertMany(
-        // Pick books in index 1,2,3 because index 0 is used for API request
-        bookList || books.slice(1, 4),
-        members[0],
-    )
-
-    t.is(checkouts.length, 3)
-
-    return checkouts
-}
-
-async function createCheckout(t, book, user) {
-    const {
-        books,
-        users: { members },
-    } = t.context
-    return checkoutModel.createAndFetch(book || books[0], user || members[0])
-}
 
 testDbSetup()
 testUserSetup()

@@ -55,6 +55,16 @@ module.exports = {
     },
 
     /**
+     * Gets checkout by book id
+     * @param {number} bookId
+     */
+    async getByBookId(bookId) {
+        return sql`
+            select * from checkouts where book_id = ${sql(bookId)}
+        `
+    },
+
+    /**
      * Gets checkout by id
      * @param {Array} ids
      */

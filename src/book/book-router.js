@@ -1,8 +1,12 @@
 const { Router } = require('express')
 
-const { checkBookExists, validateBook } = require('./book-middleware')
+const {
+    checkBookExists,
+    validateBookAdd,
+    validateBookRemove,
+} = require('./book-middleware')
 const { addBook, removeBook } = require('./book-actions')
 
 module.exports = Router()
-    .post('/', validateBook, addBook)
-    .delete('/:id', checkBookExists, removeBook)
+    .post('/', validateBookAdd, addBook)
+    .delete('/:id', checkBookExists, validateBookRemove, removeBook)

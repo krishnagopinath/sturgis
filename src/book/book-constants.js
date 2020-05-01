@@ -3,4 +3,8 @@ exports.ERRORS = {
         code: 'INVALID_ISBN',
         message: 'The ISBN passed in is not invalid',
     },
+    BOOK_CHECKED_OUT: {
+        code: 'BOOK_CHECKED_OUT',
+        message: 'Cannot remove book that was checked out',
+    },
 }

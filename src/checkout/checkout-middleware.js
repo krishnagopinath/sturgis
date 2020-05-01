@@ -58,6 +58,7 @@ exports.validateCheckout = async function validateCheckout(req, res, next) {
             return next(alreadyCheckedOutErr)
         }
 
+        // Saves us a query, lets attach it here!
         req.availableBooks = books
         next()
     } catch (error) {
