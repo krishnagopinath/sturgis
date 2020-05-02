@@ -1,18 +1,28 @@
 const test = require('ava')
+const { subMonths, isAfter } = require('date-fns')
 
 const bookModel = require('../../book/book-model')
 const checkoutModel = require('../checkout-model')
 
-exports.createCheckouts = async function createCheckouts(t, bookList, user) {
+exports.createCheckouts = async function createCheckouts(
+    t,
+    bookList,
+    userList,
+) {
     // Create 3 checkouts for member 1
     const {
         users: { members },
         books,
     } = t.context
+
+    // Pick books in index 1,2,3
+    const booksToCheckout = bookList || books.slice(1, 4)
+    const checkingOutUsers =
+        userList || Array(booksToCheckout.length).fill(members[0])
+
     const checkouts = await checkoutModel.insertMany(
-        // Pick books in index 1,2,3
-        bookList || books.slice(1, 4),
-        user || members[0],
+        booksToCheckout,
+        checkingOutUsers,
     )
 
     t.is(checkouts.length, 3)
@@ -26,6 +36,22 @@ exports.createCheckout = async function createCheckout(t, book, user) {
         users: { members },
     } = t.context
     return checkoutModel.createAndFetch(book || books[0], user || members[0])
+}
+
+exports.makeCheckoutOverdue = async function makeCheckoutOverdue(
+    t,
+    checkout,
+    fn,
+) {
+    const ogDate = checkout.created_at
+    checkout = await checkoutModel.patchById(checkout.id, {
+        created_at: fn
+            ? // This fn must return a changed date!
+              fn(checkout.created_at)
+            : subMonths(checkout.created_at, 1),
+    })
+    t.true(isAfter(ogDate, checkout.created_at))
+    return checkout
 }
 
 exports.assertCheckoutResponse = async function assertCheckoutResponse(

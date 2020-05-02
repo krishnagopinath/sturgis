@@ -1,6 +1,5 @@
 const test = require('ava')
 const HttpStatus = require('http-status-codes')
-const { subMonths, isAfter } = require('date-fns')
 
 const {
     testDbSetup,
@@ -10,13 +9,13 @@ const {
 const { testUserSetup } = require('../../user/test/user-test-utils')
 const { testBookSetup } = require('../../book/test/book-test-utils')
 const {
-    createCheckouts,
-    createCheckout,
     assertCheckoutResponse,
+    createCheckout,
+    createCheckouts,
+    makeCheckoutOverdue,
 } = require('./checkout-test-utils')
 
 const { ERRORS } = require('../checkout-constants')
-const checkoutModel = require('../checkout-model')
 
 const getCheckoutPayload = t => ({ isbn: t.context.books[0].isbn })
 
@@ -80,15 +79,8 @@ test('(403) exceeded checkout limit (3)', async t => {
 })
 
 test('(403) overdue books (> 2 weeks)', async t => {
-    // Create checkout
-    let overdue = await createCheckout(t)
-
-    // Update created_at on one of the checkouts
-    const ogDate = overdue.created_at
-    overdue = await checkoutModel.patchById(overdue.id, {
-        created_at: subMonths(overdue.created_at, 1),
-    })
-    t.true(isAfter(ogDate, overdue.created_at))
+    // Create checkout & update created_at to a time that is older than 2 weeks
+    await makeCheckoutOverdue(t, await createCheckout(t))
 
     // Try checking out book
     const res = await getApiClient()

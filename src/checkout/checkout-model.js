@@ -105,7 +105,7 @@ module.exports = {
     },
 
     /**
-     * Gets all the books that the user checked out
+     * Gets all the checkouts of a particular user
      * @param {object} user
      * @param {number} user.id
      */
@@ -127,17 +127,38 @@ module.exports = {
     },
 
     /**
+     * Gets all the checkouts that are overdue (> 2 weeks)
+     */
+    async getAllOverdue() {
+        return sql`
+            select 
+                checkouts.id,
+                checkouts.created_by_id,
+                checkouts.created_at,
+                row_to_json(books.*) as book 
+            from checkouts 
+            inner join (
+                -- 😢 setup subquery so row_to_json could be used
+                select ${sql(relatedBookCols)}
+                from books
+            ) as books on books.id = checkouts.book_id
+            where checkouts.created_at < (current_date - 13)
+            order by checkouts.created_at
+        `
+    },
+
+    /**
      * Bulk insert
      *
      * ⚠️ Unsafe, used only in tests!
      *
      * @param {*} books
-     * @param {*} user
+     * @param {*} users
      */
-    async insertMany(books, user) {
-        const checkoutRows = books.map(b => ({
+    async insertMany(books, users) {
+        const checkoutRows = books.map((b, i) => ({
             book_id: b.id,
-            created_by_id: user.id,
+            created_by_id: users[i].id,
         }))
 
         const checkouts = await sql`

@@ -5,6 +5,7 @@ const { parseUser, librarianOnly } = require('./user/user-middleware')
 
 const bookRouter = require('./book/book-router')
 const checkoutRouter = require('./checkout/checkout-router')
+const reportRouter = require('./reports/report-router')
 
 module.exports = Router()
     .get('/', (req, res) => {
@@ -14,5 +15,8 @@ module.exports = Router()
     .use(bodyParser.json())
     // Parse user info
     .use(parseUser)
-    .use('/book', librarianOnly, bookRouter)
     .use('/checkout', checkoutRouter)
+    // Librarian only routes
+    .use(librarianOnly)
+    .use('/book', bookRouter)
+    .use('/report', reportRouter)
