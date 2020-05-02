@@ -6,11 +6,9 @@
 
 ## Why the name?
 
-[Wikipedia calls the oldest public library building in the US.](https://en.wikipedia.org/wiki/Sturgis_Library), so I felt like it was a cool name for this project.
+[Wikipedia calls this the oldest public library building in the US.](https://en.wikipedia.org/wiki/Sturgis_Library), so I felt like it was a cool name for this project.
 
-## Architecture
-
-### Technical stack
+## Technical stack
 
 This project is primarily built on Node.js and PostgresSQL. Here is a breakdown of some the libraries that were used:
 
@@ -20,12 +18,12 @@ This project is primarily built on Node.js and PostgresSQL. Here is a breakdown 
 * `ley` - A DB migration library that runs the db schema files present in `migrations/`. I chose this tiny lib because I felt like `knex.js` was overkill something this simple.
 * `ava` - A testing framework that's super fast. I prefer this over mocha/chai because of the simple API surface. I'm also partial to this because of the power of testing context (`t.context`), which makes it super easy to write tests! 
 
-### Developer experience
+## Developer experience
 
 * ESLint & prettier are used to autoformat and lint the code. There is a precommit hook setup that will prevent code that contains linting errors from being committed. This removes a lot of minor distractions when working on the important stuff.
 * This repo follows `conventional-commits` guidelines and uses `commitizen` and `commitlint` to enforce them. I like this system because it keeps me organized with my work, thereby making me productive.
 
-### Database design
+## Database design
 
 <div align="center">
   <a href="https://dbdiagram.io/d/5ea4b94539d18f5553fe35ed">
@@ -41,7 +39,7 @@ The database design was kept simple:
 
 The relations between the tables are linked up the diagram above.
 
-### Code Organization
+## Code Organization
 
 I've organized the code in small modules. Each module contains files related to the resource that it is named after. Files such as a router, a database model, utilities and tests. This style of organization keeps me clutterfree and in my opinion, makes it easy to read and understand the code. This also scales well for medium to large apps!
 
@@ -64,9 +62,9 @@ Drilling down deeper, let's consider `src/book`:
 
 Finally, `src/server.js` runs the express server and `src/router` joins up all the module routers (`book-router`, `checkout-router`, etc.) into one API router, which gets set up in `src/app.js`. The `app` file also sets up other global middleware.
 
-### Testing
+## Testing
 
-The project has a lot of tests. I may have gone a wee bit overboard but it honestly didn't take too much time, once the test environment is setup. It expects a test database to be setup and once that is done, we could run `npm test -- --watch` and be on our way to writing tests!
+The project has a lot of tests. I may have gone a wee bit overboard but it honestly didn't take too much time, once the test environment was setup. It expects a test database to be setup and once that is done, run `npm test` to see the tests in action. 
 
 All common setup and teardown files live in `src/common/test-utils`. Some important files:
 
@@ -82,4 +80,22 @@ Module related test utils are stored in the modules (`book/test/book-test-utils`
 
 I didn't spend too much time "organizing" the test files, because I believe that writing tests are all that matters. If there are good tests, we could refactor gradually as we write more.
 
-Run `npm test` to see the tests in action. 
+## Cutting corners
+
+I had to cut some corners to get this done quickly. I've tried to list down the big ones here:
+
+* The `books` table could end up with a lot of duplicate data. Each time an isbn is added to the `books` table, it really does not care about whether the isbn already exists or not. For example, we could have multiple copies of the "Tale of two cities", which is a waste of space. Ideally, we should track of the copies in a separate table (`book_copies`), thereby removing duplication from the `books` table. While this sounds great, it seemed overkill for a small project. So, I'm documenting it, in case the reader wonders. Here's a simple description of this implementation:
+  - `book_copies` will have the following table schema:
+    ```
+      create table if not exists book_copies (
+          id serial primary key,
+          book_id int not null,
+          created_at timestamp without time zone default (now() at time zone 'utc')
+      );
+      alter table books add foreign key (book_id) references books (id);
+    ```
+
+  - Every time a book is added, we'll check if the book already exists. If it doesn't, we add an entry to `books` and to `book_copies`. If it does, we only add an entry to `book_copies`.
+  - When a book is deleted, we'll delete from `book_copies`. If only one copy exists in `book_copies`, we delete the row from `books_copies` and then, we remove the book from `books`.
+  - Basically, `book_copies` becomes the interface the members work with. `books` is a silent table that will be kept in sync, based on alterations to `book_copies`.
+* It's generally best practice to pass in `tz` param for report endpoints. This ensures correct date parsing based on client TZ, which is a great UX improvement and reduces TZ related bugs. I did not implement this for the `reports/overdue` endpoint. It just sets up all of the dates in UTC for now. If this were a production app, this would be treated a bug.
