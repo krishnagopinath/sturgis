@@ -2,8 +2,8 @@ exports.up = async function up(sql) {
     await sql`
         create table if not exists checkouts (
             id serial primary key,
-            book_id int unique,
-            created_by_id int,
+            book_id int unique not null,
+            created_by_id int not null,
             created_at timestamp without time zone default (now() at time zone 'utc')
         );
     `

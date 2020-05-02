@@ -6,7 +6,7 @@ exports.up = async function up(sql) {
     await sql` 
         create table if not exists users (
             id serial primary key,
-            name varchar,
+            name varchar not null,
             role user_roles
         );
     `

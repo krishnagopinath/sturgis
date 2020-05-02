@@ -2,11 +2,11 @@ exports.up = async function up(sql) {
     await sql`
         create table if not exists books (
             id serial primary key,
-            name varchar,
+            name varchar not null,
             author varchar,
-            isbn varchar,
+            isbn varchar not null,
             created_at timestamp without time zone default (now() at time zone 'utc'),
-            created_by_id int
+            created_by_id int not null
         );
     `
 
