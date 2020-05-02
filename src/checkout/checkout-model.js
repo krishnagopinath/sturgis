@@ -145,7 +145,7 @@ module.exports = {
                 select ${sql(relatedBookCols)}
                 from books
             ) as books on books.id = checkouts.book_id
-            where checkouts.created_at < (current_date - 13)
+            where checkouts.created_at < ((now() at time zone 'UTC') - interval'13 days')
             order by checkouts.created_at
         `
     },
