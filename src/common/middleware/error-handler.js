@@ -1,4 +1,9 @@
-// TODO: This must be connected to a sink
+/**
+ * Global error handler
+ * All `next` calls with an error end up here.
+ *
+ * TODO: This must be connected to a sink for production use
+ */
 exports.errorHandler = function errorHandler(err, req, res, next) {
     const { status, message } = err
     if (

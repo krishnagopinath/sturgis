@@ -16,6 +16,9 @@ const invalidIsbnErr = makeHttpBadRequestError(ERRORS.INVALID_ISBN)
 const checkedOutDeleteErr = makeHttpForbiddenError(ERRORS.BOOK_CHECKED_OUT)
 const bookNotFoundErr = makeHttpError(HttpStatus.NOT_FOUND)
 
+/**
+ * Checker to determine if book exists in the library.
+ */
 exports.doesBookExist = async function doesCheckoutExist(req, res, next) {
     try {
         const queryFn = id => bookModel.getById(id)
@@ -29,6 +32,9 @@ exports.doesBookExist = async function doesCheckoutExist(req, res, next) {
     }
 }
 
+/**
+ * Middleware that is run before a book is added.
+ */
 exports.validateBookAdd = async function validateBookAdd(req, res, next) {
     try {
         const { isbn } = req.body || {}
@@ -44,6 +50,9 @@ exports.validateBookAdd = async function validateBookAdd(req, res, next) {
     }
 }
 
+/**
+ * Middleware that is run before a book is removed.
+ */
 exports.validateBookRemove = async function validateBookRemove(req, res, next) {
     try {
         const checkouts = await checkoutModel.getByBookId(req.item.id)

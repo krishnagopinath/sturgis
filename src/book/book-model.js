@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 const { sql } = require('../common/utils/index')
 
+/**
+ * Methods to interact with the books table
+ */
 module.exports = {
     /**
      * Inserts book into DB

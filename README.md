@@ -6,12 +6,7 @@
 
 ## Why the name?
 
-[Wikipedia says this](https://en.wikipedia.org/wiki/Sturgis_Library): 
-
-> The Sturgis Library in Barnstable, Massachusetts is the oldest building that houses a public library in America.
-
-I love libraries, so I felt like a cool name for this project.
-
+[Wikipedia calls the oldest public library building in the US.](https://en.wikipedia.org/wiki/Sturgis_Library), so I felt like it was a cool name for this project.
 
 ## Architecture
 
@@ -32,8 +27,8 @@ This project is primarily built on Node.js and PostgresSQL. Here is a breakdown 
 
 ### Database design
 
-<div align="https://dbdiagram.io/d/5ea4b94539d18f5553fe35ed">
-  <a href="https://npmjs.org/package/polka">
+<div align="center">
+  <a href="https://dbdiagram.io/d/5ea4b94539d18f5553fe35ed">
     <img src="db-diagram.png" alt="Database Diagram" width="400" />
   </a>
 </div>
@@ -48,7 +43,17 @@ The relations between the tables are linked up the diagram above.
 
 ### Code Organization
 
-I've organized the code in small modules. Each module contains files related to the resource that it is named after. Files such as a router, a database model, utilities and tests. This keeps me clutterfree and in my opinion, makes it easy to read and understand the code. For example, let's consider `src/book`: 
+I've organized the code in small modules. Each module contains files related to the resource that it is named after. Files such as a router, a database model, utilities and tests. This style of organization keeps me clutterfree and in my opinion, makes it easy to read and understand the code. This also scales well for medium to large apps!
+
+Without further ado, here's the list of modules:
+
+* `book` - Book related files. These include operations such as adding a book, removing a book, etc.
+* `user` - User related files. Doesn't have a route, but has other user related info.
+* `checkout` - Checkout related files. Operations like checking out a book, retrieving checkout information live here. This module has a lot of validation logic in `checkout-middleware`!
+* `reports` - Contains only one report at this time. The overdue report.
+* `common` - Files that don't belong to any of the modules live in this module. These are methods that are used all over the project, so it doesn't make sense to store them in one of the modules.
+
+Drilling down deeper, let's consider `src/book`: 
 
 * `book-model.js` - DB methods to access the `books` table. This is the single way to access the books table!
 * `book-router.js` - The router that gets hosted on `/api/book`.
@@ -57,13 +62,11 @@ I've organized the code in small modules. Each module contains files related to 
 * `book-utils.js` - A "junk pile" for book related methods that don't fit in any other file. This is where we could interact with services, etc.
 * `test/` - Book related tests. Each endpoint in the `book-router` gets its own test file.
 
-Files, methods that don't belong to any of the modules (`book`, `checkout`, `reports`, etc.) live in the `common/` directory. These are methods that are used all over the project, so it doesn't make sense to store them in one of the modules.
-
 Finally, `src/server.js` runs the express server and `src/router` joins up all the module routers (`book-router`, `checkout-router`, etc.) into one API router, which gets set up in `src/app.js`. The `app` file also sets up other global middleware.
 
 ### Testing
 
-The project has a lot of tests. I may have gone a wee bit overboard but it honestly doesn't take too much time, once the test environment is setup. It expects a test database to be setup and once that is done, we could run `npm test -- --watch` and be on our way to writing tests!
+The project has a lot of tests. I may have gone a wee bit overboard but it honestly didn't take too much time, once the test environment is setup. It expects a test database to be setup and once that is done, we could run `npm test -- --watch` and be on our way to writing tests!
 
 All common setup and teardown files live in `src/common/test-utils`. Some important files:
 
@@ -78,3 +81,5 @@ All common setup and teardown files live in `src/common/test-utils`. Some import
 Module related test utils are stored in the modules (`book/test/book-test-utils`, `checkout/test/checkout-test-utils`). 
 
 I didn't spend too much time "organizing" the test files, because I believe that writing tests are all that matters. If there are good tests, we could refactor gradually as we write more.
+
+Run `npm test` to see the tests in action. 

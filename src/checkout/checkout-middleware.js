@@ -38,6 +38,9 @@ function alreadyCheckedOutByUser(checkouts, isbn) {
     return !!checkouts.find(c => c.book.isbn === isbn)
 }
 
+/**
+ * Some hefty validation during checkout creation
+ */
 exports.validateCheckout = async function validateCheckout(req, res, next) {
     try {
         const { isbn } = req.body || {}
@@ -70,6 +73,9 @@ exports.validateCheckout = async function validateCheckout(req, res, next) {
     }
 }
 
+/**
+ * Middleware that verifies availability of a checkout
+ */
 exports.doesCheckoutExist = async function doesCheckoutExist(req, res, next) {
     try {
         const item = await checkResourceExists(req.params.id, id => {

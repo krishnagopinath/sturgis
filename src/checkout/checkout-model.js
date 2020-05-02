@@ -3,6 +3,9 @@ const { sql } = require('../common/utils/index')
 
 const relatedBookCols = ['id', 'isbn', 'author', 'name']
 
+/**
+ * Methods to interact with the checkouts table
+ */
 module.exports = {
     /**
      * Creates a checkout

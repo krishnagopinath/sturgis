@@ -1,3 +1,7 @@
+/**
+ * Migration file that sets up the books table and its references.
+ */
+
 exports.up = async function up(sql) {
     await sql`
         create table if not exists books (

@@ -2,7 +2,7 @@ const isbnService = require('node-isbn')
 
 const { PROVIDER_NAMES } = isbnService
 
-// 📝 About requiring this util
+// 📝 INFO ABOUT HOW TO `require` THIS UTIL:
 // Some care must be taken with requiring this module
 // because it is being mocked by `sinon` in tests.
 //
@@ -11,6 +11,9 @@ const { PROVIDER_NAMES } = isbnService
 // ✅ const bookUtils = require('./book-utils')
 // 👉 bookUtils.getInfoByIsbn()
 
+/**
+ * Given an ISBN number, gets book information
+ */
 exports.getInfoByIsbn = async function getInfoByIsbn(isbnNo) {
     if (!isbnNo || typeof isbnNo !== 'string') return null
 

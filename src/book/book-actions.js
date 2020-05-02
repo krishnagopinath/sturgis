@@ -2,6 +2,9 @@ const HttpStatus = require('http-status-codes')
 
 const bookModel = require('./book-model')
 
+/**
+ * Controller method used to add a book to the library
+ */
 exports.addBook = async function addBook(req, res, next) {
     try {
         const bookFromDb = await bookModel.create(req.bookInfo, req.user)
@@ -11,6 +14,9 @@ exports.addBook = async function addBook(req, res, next) {
     }
 }
 
+/**
+ * Controller method used to remove a copy from the library
+ */
 exports.removeBook = async function removeBook(req, res, next) {
     try {
         await bookModel.deleteById(req.item.id)

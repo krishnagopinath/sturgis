@@ -1,4 +1,8 @@
 /**
+ * This file contains methods that try to mimic lodash methods!
+ */
+
+/**
  * Substitute for `_.get`.
  */
 exports.get = function get(value, path, defaultValue) {

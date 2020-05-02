@@ -1,3 +1,7 @@
+/**
+ * Migration file that sets up the checkout table and its related table information.
+ */
+
 exports.up = async function up(sql) {
     await sql`
         create table if not exists checkouts (

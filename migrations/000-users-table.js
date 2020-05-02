@@ -1,3 +1,7 @@
+/**
+ * Migration file that sets up the user table.
+ */
+
 exports.up = async function up(sql) {
     await sql`
         create type user_roles as enum ('librarian', 'member');
