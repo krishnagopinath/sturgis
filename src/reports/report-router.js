@@ -1,12 +1,13 @@
 const { Router } = require('express')
 const HttpStatus = require('http-status-codes')
 
+const { librarianOnly } = require('../user/user-middleware')
 const checkoutModel = require('../checkout/checkout-model')
 
 /**
  * Simple report router
  */
-module.exports = Router().get('/overdue', getOverdueBooks)
+module.exports = Router().use(librarianOnly).get('/overdue', getOverdueBooks)
 
 /**
  * Controller method that gets overdue books

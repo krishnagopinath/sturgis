@@ -25,3 +25,12 @@ exports.removeBook = async function removeBook(req, res, next) {
         next(error)
     }
 }
+
+exports.getBookList = async function getBookList(req, res, next) {
+    try {
+        const books = await bookModel.getAllAvailable()
+        res.status(HttpStatus.OK).json(books)
+    } catch (error) {
+        next(error)
+    }
+}

@@ -7,6 +7,10 @@ exports.ERRORS = {
         code: 'NO_ACCESS',
         message: 'You are not authorized to perform this action',
     },
+    BAD_LOGIN: {
+        code: 'BAD_LOGIN',
+        message: 'Incorrect credentials',
+    },
 }
 
 exports.USER_ROLES = {

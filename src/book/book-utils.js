@@ -18,7 +18,7 @@ exports.getInfoByIsbn = async function getInfoByIsbn(isbnNo) {
     if (!isbnNo || typeof isbnNo !== 'string') return null
 
     const book = await isbnService
-        .provider([PROVIDER_NAMES.OPENLIBRARY, PROVIDER_NAMES.GOOGLE])
+        .provider([PROVIDER_NAMES.GOOGLE, PROVIDER_NAMES.OPENLIBRARY])
         .resolve(isbnNo)
         .catch(() => {
             // Not found error, send out `null`
@@ -27,11 +27,12 @@ exports.getInfoByIsbn = async function getInfoByIsbn(isbnNo) {
 
     if (!book) return null
 
-    const { title, authors } = book
+    const { title, authors, imageLinks } = book
 
     return {
         isbn: isbnNo,
         name: title,
         author: authors.join(', '),
+        thumbnail_url: imageLinks.thumbnail,
     }
 }

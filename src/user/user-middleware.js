@@ -24,7 +24,7 @@ exports.parseUser = async function parseUser(req, res, next) {
     if (!userId) return next(invalidUserErr)
 
     try {
-        const [user] = await userModel.fetchById(userId)
+        const user = await userModel.getById(userId)
         if (!user) return next(invalidUserErr)
 
         req.user = user

@@ -53,6 +53,7 @@ test('(201) book added', async t => {
         isbn,
         author: 'Amitav Ghosh',
         name: 'The Hungry Tide: A Novel',
+        thumbnail_url: 'https://via.placeholder.com/500x600',
     }
     const librarianId = t.context.users.librarian.id
 
@@ -71,7 +72,15 @@ test('(201) book added', async t => {
     t.truthy(res.body.id)
     t.deepEqual(
         Object.keys(res.body).sort(),
-        ['id', 'isbn', 'author', 'name', 'created_by_id', 'created_at'].sort(),
+        [
+            'id',
+            'isbn',
+            'author',
+            'name',
+            'thumbnail_url',
+            'created_by_id',
+            'created_at',
+        ].sort(),
     )
 
     // Data accuracy
@@ -79,8 +88,8 @@ test('(201) book added', async t => {
 
     t.truthy(bookFromDb)
     t.deepEqual(
-        pick(bookFromDb, 'isbn', 'author', 'name'),
-        pick(expectedBookInfo, 'isbn', 'author', 'name'),
+        pick(bookFromDb, 'isbn', 'author', 'name', 'thumbnail_url'),
+        pick(expectedBookInfo, 'isbn', 'author', 'name', 'thumbnail_url'),
     )
 
     t.truthy(bookFromDb.created_at)

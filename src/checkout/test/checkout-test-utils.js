@@ -20,12 +20,18 @@ exports.createCheckouts = async function createCheckouts(
     const checkingOutUsers =
         userList || Array(booksToCheckout.length).fill(members[0])
 
+    t.is(
+        booksToCheckout.length,
+        checkingOutUsers.length,
+        'bookList and userList must have equal length',
+    )
+
     const checkouts = await checkoutModel.insertMany(
         booksToCheckout,
         checkingOutUsers,
     )
 
-    t.is(checkouts.length, 3)
+    t.is(checkouts.length, booksToCheckout.length)
 
     return checkouts
 }

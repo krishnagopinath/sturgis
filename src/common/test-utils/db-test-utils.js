@@ -94,6 +94,9 @@ exports.testDbSetup = async function testDbSetup() {
         await migrateDb(t)
     })
 
+    // Try to keep a clean slate by over-truncating
+    test.beforeEach(truncateDb)
     test.afterEach.always(truncateDb)
+
     test.after.always(rollbackDb)
 }
