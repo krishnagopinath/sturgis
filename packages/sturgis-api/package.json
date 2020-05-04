@@ -7,6 +7,7 @@
         "start": "cross-env PGDATABASE=sturgisdev nodemon --inspect ./src/server.js",
         "test": "cross-env NODE_ENV=test PGDATABASE=sturgistest dotenv -- ava --verbose --serial",
         "migrate": "dotenv -- ley up",
+        "seed": "dotenv -- node scripts/seed-database",
         "rollback": "dotenv -- ley down -a"
     },
     "repository": {

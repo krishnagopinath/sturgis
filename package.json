@@ -7,12 +7,14 @@
     "scripts": {
         "reset-deps": "rm -rf {.,packages/*}/{node_modules,package-lock.json}",
         "postinstall": "lerna bootstrap --no-ci",
-        "start": "lerna run start --parallel",
+        "start": "concurrently 'npm:start-*'",
+        "start-api": "lerna run --scope 'sturgis-api' start --stream",
+        "start-ui": "lerna run --scope 'sturgis-ui' dev --stream",
         "test": "lerna run test --concurrency=1 --stream",
         "add": "lerna add",
         "format": "prettier --write --plugin-search-dir=. './packages/**/*'",
         "lint": "eslint './packages/**/*.{js,svelte}'",
-        "lint:fix": "eslint --fix './packages/**/*.{js,svelte}'",
+        "lint-fix": "eslint --fix './packages/**/*.{js,svelte}'",
         "cm": "git-cz"
     },
     "repository": {
@@ -29,6 +31,7 @@
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
+        "concurrently": "^5.2.0",
         "cz-conventional-changelog": "^3.1.0",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.11.0",
