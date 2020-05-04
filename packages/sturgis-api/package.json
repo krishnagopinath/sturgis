@@ -39,7 +39,7 @@
         "express": "^4.17.1",
         "helmet": "^3.22.0",
         "http-status-codes": "^1.4.0",
-        "node-isbn": " palmerabollo/node-isbn#e4fb5d85f4f18cd414c89d893bf3b37b42b21d12",
+        "node-isbn": "palmerabollo/node-isbn#e4fb5d85f4f18cd414c89d893bf3b37b42b21d12",
         "postgres": "^1.0.2"
     }
 }
