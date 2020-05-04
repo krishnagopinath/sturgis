@@ -1,8 +1,17 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { sass } = require('svelte-preprocess-sass')
 const path = require('path')
 
 const mode = process.env.NODE_ENV || 'development'
 const prod = mode === 'production'
+
+const cssLoaders = [
+    {
+        loader: MiniCssExtractPlugin.loader,
+        options: { hmr: !prod },
+    },
+    'css-loader',
+]
 
 module.exports = {
     entry: {
@@ -52,19 +61,32 @@ module.exports = {
                     options: {
                         emitCss: true,
                         hotReload: true,
+                        preprocess: [
+                            {
+                                style: sass(
+                                    {
+                                        includePaths: [
+                                            // Allow imports from 'node_modules'
+                                            path.join(
+                                                __dirname,
+                                                'node_modules',
+                                            ),
+                                        ],
+                                    },
+                                    { name: 'scss' },
+                                ),
+                            },
+                        ],
                     },
                 },
             },
             {
                 test: /\.css$/,
-                use: [
-                    /**
-                     * MiniCssExtractPlugin doesn't support HMR.
-                     * For developing, use 'style-loader' instead.
-                     * */
-                    prod ? MiniCssExtractPlugin.loader : 'style-loader',
-                    'css-loader',
-                ],
+                use: cssLoaders,
+            },
+            {
+                test: /\.scss$/,
+                use: [...cssLoaders, 'sass-loader'],
             },
         ],
     },
@@ -72,6 +94,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css',
+            chunkFilename: '[name].[id].css',
         }),
     ],
     devtool: prod ? false : 'source-map',

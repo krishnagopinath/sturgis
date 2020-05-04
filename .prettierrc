@@ -14,8 +14,8 @@
     "htmlWhitespaceSensitivity": "css",
     "vueIndentScriptAndStyle": false,
     "endOfLine": "lf",
-    "svelteSortOrder" : "styles-scripts-markup",
+    "svelteSortOrder": "styles-scripts-markup",
     "svelteStrictMode": true,
     "svelteBracketNewLine": true,
-    "svelteAllowShorthand": false
+    "svelteAllowShorthand": true
 }

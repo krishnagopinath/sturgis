@@ -1,11 +1,10 @@
-<style>
-    h1 {
-        color: purple;
-    }
+<style lang="scss">
+    @import '~carbon-components/css/carbon-components.css';
 </style>
 
 <script>
-    export let name
+    import Router from 'svelte-spa-router'
+    import routes from './routes'
 </script>
 
-<h1>Hello {name}!</h1>
+<Router {routes} />
