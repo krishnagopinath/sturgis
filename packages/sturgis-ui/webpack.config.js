@@ -20,6 +20,29 @@ module.exports = {
         filename: '[name].js',
         chunkFilename: '[name].[id].js',
     },
+    devServer: {
+        port: 3000,
+        overlay: true,
+        liveReload: true,
+        watchContentBase: true,
+        contentBase: 'public',
+        proxy: {
+            // Proxy the API urls so client and API could be served from the same port!
+            // In production, some sort of reverse proxy will have to be used.
+            '/api/': { target: 'http://localhost:12345/' },
+        },
+        stats: {
+            colors: true,
+            hash: false,
+            timings: true,
+            chunks: false,
+            chunkModules: false,
+            modules: false,
+        },
+        watchOptions: {
+            ignored: /node_modules/,
+        },
+    },
     module: {
         rules: [
             {
