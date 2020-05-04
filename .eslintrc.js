@@ -1,6 +1,11 @@
 module.exports = {
-    root: true,
-    extends: ['standard', 'plugin:prettier/recommended'],
+    env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+        node: true,
+    },
+    extends: ['standard', 'prettier'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -8,7 +13,11 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2018,
     },
-    rules: {
-        'prettier/prettier': ['warn'],
-    },
+    plugins: ['svelte3'],
+    overrides: [
+        {
+            files: ['**/*.svelte'],
+            processor: 'svelte3/svelte3',
+        },
+    ],
 }
