@@ -1,7 +1,7 @@
 {
-	"recommendations": [
-		"esbenp.prettier-vscode",
-		"dbaeumer.vscode-eslint",
-		"jamesbirtles.svelte-vscode"
-	]
+    "recommendations": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "svelte.svelte-vscode"
+    ]
 }

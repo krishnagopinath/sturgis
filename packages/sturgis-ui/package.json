@@ -1,28 +1,24 @@
 {
     "name": "sturgis-ui",
     "version": "1.0.0",
-    "devDependencies": {
-        "carbon-components-svelte": "^0.5.1",
-        "cross-env": "^5.2.0",
-        "css-loader": "^2.1.1",
-        "mini-css-extract-plugin": "^0.9.0",
-        "node-sass": "^4.14.0",
-        "sass-loader": "^8.0.2",
-        "serve": "^11.0.0",
-        "style-loader": "^0.23.1",
-        "svelte": "^3.22.1",
-        "svelte-loader": "2.13.6",
-        "svelte-preprocess-sass": "^0.2.0",
-        "webpack": "^4.30.0",
-        "webpack-cli": "^3.3.0",
-        "webpack-dev-server": "^3.3.1"
-    },
     "scripts": {
-        "build": "cross-env NODE_ENV=production webpack",
-        "start": "webpack-dev-server"
+        "build": "rollup -c",
+        "dev": "rollup -c -w"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "11.0.2",
+        "@rollup/plugin-node-resolve": "^7.0.0",
+        "rollup": "^1.20.0",
+        "rollup-plugin-dev": "^1.1.2",
+        "rollup-plugin-livereload": "^1.0.0",
+        "rollup-plugin-serve-proxy": "^1.1.4",
+        "rollup-plugin-svelte": "^5.0.3",
+        "rollup-plugin-terser": "^5.1.2",
+        "svelte": "^3.0.0"
     },
     "dependencies": {
-        "carbon-components": "^10.11.2",
+        "sirv-cli": "^0.4.4",
+        "svelte-chota": "^1.7.1",
         "svelte-spa-router": "^2.1.0",
         "wretch": "^1.7.2"
     }

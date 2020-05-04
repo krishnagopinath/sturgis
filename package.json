@@ -1,5 +1,5 @@
 {
-    "name": "sturgis-api",
+    "name": "sturgis",
     "private": true,
     "version": "1.0.0",
     "description": "A simple library system built with Node.js & Svelte",
@@ -7,7 +7,9 @@
     "scripts": {
         "reset-deps": "rm -rf {.,packages/*}/{node_modules,package-lock.json}",
         "postinstall": "lerna bootstrap --no-ci",
-        "start": "lerna run start --parallel",
+        "start": "concurrently 'npm:start-*'",
+        "start-api": "lerna run --scope 'sturgis-api' start --stream",
+        "start-ui": "lerna run --scope 'sturgis-ui' dev --stream",
         "test": "lerna run test --concurrency=1 --stream",
         "add": "lerna add",
         "format": "prettier --write --plugin-search-dir=. './packages/**/*'",
@@ -17,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/krishnagopinath/sturgis-api.git"
+        "url": "git+https://github.com/krishnagopinath/sturgis.git"
     },
     "keywords": [],
     "author": "",
@@ -29,6 +31,7 @@
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
+        "concurrently": "^5.2.0",
         "cz-conventional-changelog": "^3.1.0",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.11.0",

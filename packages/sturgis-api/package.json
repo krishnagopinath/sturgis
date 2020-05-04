@@ -10,17 +10,7 @@
         "seed": "dotenv -- node scripts/seed-database",
         "rollback": "dotenv -- ley down -a"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/krishnagopinath/sturgis.git"
-    },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/krishnagopinath/sturgis/issues"
-    },
-    "homepage": "https://github.com/krishnagopinath/sturgis#readme",
     "devDependencies": {
         "app-root-path": "^3.0.0",
         "ava": "^3.7.1",
