@@ -1,15 +1,17 @@
 {
   "name": "sturgis-api",
+  "private": true,
   "version": "1.0.0",
-  "description": "A simple library API",
+  "description": "A simple library system built with Node.js & Svelte",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env PGDATABASE=sturgisdev nodemon --inspect ./src/server.js",
-    "test": "cross-env NODE_ENV=test PGDATABASE=sturgistest dotenv -- ava --verbose --serial",
-    "migrate": "dotenv -- ley up",
-    "rollback": "dotenv -- ley down -a",
-    "lint": "eslint '**/*.js'",
-    "lint:fix": "eslint --fix '**/*.js",
+    "reset-deps": "rm -rf node_modules && rm -rf packages/*/node_modules",
+    "postinstall": "lerna bootstrap --no-ci",
+    "start": "lerna run start --parallel",
+    "test": "lerna run test --concurrency=1 --stream",
+    "add": "lerna add",
+    "lint": "eslint './packages/**/*.{js,jsx}'",
+    "lint:fix": "eslint --fix './packages/**/*.{js,jsx}'",
     "cm": "git-cz"
   },
   "repository": {
@@ -20,17 +22,13 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/krishnagopinath/sturgis-api/issues"
+    "url": "https://github.com/krishnagopinath/sturgis/issues"
   },
-  "homepage": "https://github.com/krishnagopinath/sturgis-api#readme",
+  "homepage": "https://github.com/krishnagopinath/sturgis#readme",
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "app-root-path": "^3.0.0",
-    "ava": "^3.7.1",
-    "cross-env": "^7.0.2",
     "cz-conventional-changelog": "^3.1.0",
-    "dotenv-cli": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
@@ -40,12 +38,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.5",
-    "ley": "^0.5.0",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.1.7",
-    "nodemon": "^2.0.3",
-    "prettier": "^2.0.5",
-    "sinon": "^9.0.2",
-    "supertest": "^4.0.2"
+    "prettier": "^2.0.5"
   },
   "husky": {
     "hooks": {
@@ -62,15 +57,5 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "compression": "^1.7.4",
-    "date-fns": "^2.12.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "helmet": "^3.22.0",
-    "http-status-codes": "^1.4.0",
-    "node-isbn": "krishnagopinath/node-isbn#fix-broken-args-parsing",
-    "postgres": "^1.0.2"
-  }
+  "dependencies": {}
 }
