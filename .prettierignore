@@ -1,0 +1,8 @@
+.gitignore
+.env
+
+*.{png,jpg,jpeg}
+
+*/**/public
+
+package-lock.json

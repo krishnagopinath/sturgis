@@ -1,67 +1,67 @@
 {
-  "name": "sturgis-api",
-  "private": true,
-  "version": "1.0.0",
-  "description": "A simple library system built with Node.js & Svelte",
-  "main": "index.js",
-  "scripts": {
-    "reset-deps": "rm -rf {.,packages/*}/{node_modules,package-lock.json}",
-    "postinstall": "lerna bootstrap --no-ci",
-    "start": "lerna run start --parallel",
-    "test": "lerna run test --concurrency=1 --stream",
-    "add": "lerna add",
-    "format": "prettier --write --plugin-search-dir=. './packages/**/*.{js,svelte}'",
-    "lint": "eslint './packages/**/*.{js,svelte}'",
-    "lint:fix": "eslint --fix './packages/**/*.{js,svelte}'",
-    "cm": "git-cz"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krishnagopinath/sturgis-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/krishnagopinath/sturgis/issues"
-  },
-  "homepage": "https://github.com/krishnagopinath/sturgis#readme",
-  "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "cz-conventional-changelog": "^3.1.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-svelte3": "^2.7.3",
-    "husky": "^4.2.5",
-    "lerna": "^3.20.2",
-    "lint-staged": "^10.1.7",
-    "prettier": "^2.0.5",
-    "prettier-plugin-svelte": "^1.0.0",
-    "svelte": "^3.22.1"
-  },
-  "husky": {
-    "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.{js,svelte}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "dependencies": {}
+    "name": "sturgis-api",
+    "private": true,
+    "version": "1.0.0",
+    "description": "A simple library system built with Node.js & Svelte",
+    "main": "index.js",
+    "scripts": {
+        "reset-deps": "rm -rf {.,packages/*}/{node_modules,package-lock.json}",
+        "postinstall": "lerna bootstrap --no-ci",
+        "start": "lerna run start --parallel",
+        "test": "lerna run test --concurrency=1 --stream",
+        "add": "lerna add",
+        "format": "prettier --write --plugin-search-dir=. './packages/**/*'",
+        "lint": "eslint './packages/**/*.{js,svelte}'",
+        "lint:fix": "eslint --fix './packages/**/*.{js,svelte}'",
+        "cm": "git-cz"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/krishnagopinath/sturgis-api.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/krishnagopinath/sturgis/issues"
+    },
+    "homepage": "https://github.com/krishnagopinath/sturgis#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "cz-conventional-changelog": "^3.1.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "eslint-plugin-svelte3": "^2.7.3",
+        "husky": "^4.2.5",
+        "lerna": "^3.20.2",
+        "lint-staged": "^10.1.7",
+        "prettier": "^2.0.5",
+        "prettier-plugin-svelte": "^1.0.0",
+        "svelte": "^3.22.1"
+    },
+    "husky": {
+        "hooks": {
+            "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "lint-staged": {
+        "*.{js,svelte}": [
+            "prettier --write",
+            "eslint --fix"
+        ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "dependencies": {}
 }
