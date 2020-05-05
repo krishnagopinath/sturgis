@@ -16,6 +16,11 @@ export default {
         name: 'app',
         file: 'public/build/bundle.js',
     },
+    // https://stackoverflow.com/a/43556986/1217785
+    onwarn: function (warning) {
+        if (warning.code === 'THIS_IS_UNDEFINED') return
+        console.warn(warning.message)
+    },
     plugins: [
         svelte({
             // enable run-time checks when not in production
@@ -41,8 +46,8 @@ export default {
         }),
         commonjs(),
 
-        // In dev mode, call `npm run start` once
-        // the bundle has been generated
+        // In dev mode, serve API under a proxy, so we needn't inject
+        // api url into the app.
         !production &&
             dev({
                 dirs: ['public'],

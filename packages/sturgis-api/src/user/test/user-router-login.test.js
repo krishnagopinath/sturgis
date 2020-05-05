@@ -6,9 +6,8 @@ const {
     getApiClient,
     testApiSetup,
 } = require('../../common/test-utils/index')
-const { testUserSetup } = require('./user-test-utils')
+const { testUserSetup, assertUser } = require('./user-test-utils')
 
-const { pick } = require('../../common/utils/index')
 const { ERRORS } = require('../user-constants')
 
 testDbSetup()
@@ -38,8 +37,6 @@ test('(200) login successful', async t => {
         .send({ email: t.context.users.members[0].email })
 
     t.is(res.status, HttpStatus.OK)
-    t.deepEqual(
-        pick(res.body, 'id', 'role', 'name', 'email'),
-        pick(expectedUser, 'id', 'role', 'name', 'email'),
-    )
+
+    await assertUser(t, expectedUser.id, res.body)
 })

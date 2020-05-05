@@ -1,5 +1,8 @@
 const { Router } = require('express')
 
-const { loginUser } = require('./user-actions')
+const { loginUser, verifyUser } = require('./user-actions')
+const { parseUser } = require('./user-middleware')
 
-module.exports = Router().post('/login', loginUser)
+module.exports = Router()
+    .post('/login', loginUser)
+    .get('/verify', parseUser, verifyUser)

@@ -4,6 +4,7 @@ const HttpStatus = require('http-status-codes')
 const { getApiClient } = require('../../common/test-utils/index')
 const { userData } = require('../../common/seed')
 
+const { pick } = require('../../common/utils/index')
 const { USER_ROLES, ERRORS } = require('../user-constants')
 const userModel = require('../user-model')
 
@@ -23,6 +24,14 @@ exports.testLibrarianRole = function testLibrarianRole(httpVerb) {
         t.is(res.status, HttpStatus.FORBIDDEN)
         t.is(res.body.error.code, ERRORS.NO_ACCESS.code)
     })
+}
+
+exports.assertUser = async function assertUser(t, userId, output) {
+    const expectedUser = await userModel.getById(userId)
+    t.deepEqual(
+        pick(output, 'id', 'role', 'name', 'email'),
+        pick(expectedUser, 'id', 'role', 'name', 'email'),
+    )
 }
 
 /**

@@ -24,3 +24,7 @@ exports.loginUser = async function loginUser(req, res, next) {
         next(error)
     }
 }
+
+exports.verifyUser = function verifyUser(req, res, next) {
+    res.status(HttpStatus.OK).json(req.user)
+}
