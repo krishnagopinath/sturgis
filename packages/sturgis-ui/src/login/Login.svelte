@@ -27,7 +27,7 @@
         try {
             const user = await api().url('user/login').post({ email }).json()
             window.localStorage.setItem('x-user-id', user.id)
-            replace('/home')
+            replace('/')
         } catch (err) {
             error = err.message
         } finally {
