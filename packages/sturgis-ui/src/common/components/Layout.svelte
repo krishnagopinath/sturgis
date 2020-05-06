@@ -3,8 +3,8 @@
 </script>
 
 <div class="is-full-screen">
-    <Row class="is-full-screen">
-        <Col size="12" sizeMD="5">
+    <Row>
+        <Col>
             <slot />
         </Col>
     </Row>

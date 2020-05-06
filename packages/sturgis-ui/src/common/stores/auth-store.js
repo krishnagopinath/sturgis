@@ -2,12 +2,18 @@ import { writable, derived, get } from 'svelte/store'
 
 import { api } from '../utils/'
 
-export const setAuthHeader = value => {
-    window.localStorage.setItem('x-user-id', value)
-}
-
-export const getAuthHeader = () => {
-    return window.localStorage.getItem('x-user-id')
+// Simple authHeader util.
+// Its not a store because its too simple to be one!
+export const authHeader = {
+    set(value) {
+        return window.localStorage.setItem('x-user-id', value)
+    },
+    get() {
+        return window.localStorage.getItem('x-user-id')
+    },
+    clear() {
+        window.localStorage.removeItem('x-user-id')
+    },
 }
 
 function createAuthStore() {
@@ -19,7 +25,7 @@ function createAuthStore() {
         async login(email) {
             const user = await api().url('user/login').post({ email }).json()
             set(user)
-            setAuthHeader(user.id)
+            authHeader.set(user.id)
         },
         async verify() {
             // Already initialized, no need to reinitialize

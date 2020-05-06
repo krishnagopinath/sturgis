@@ -8,7 +8,7 @@
     import { Nav as ChotaNav } from 'svelte-chota'
     import { links } from 'svelte-routing'
     import { getActiveRoute } from '../utils/'
-    import { isLibrarian } from '../stores/'
+    import { isLibrarian, authHeader } from '../stores/'
     import Logo from './Logo.svelte'
 
     const activeRoute = getActiveRoute()
@@ -33,6 +33,11 @@
                     {#if $isLibrarian}
                         <a href="/manage">Manage</a>
                     {/if}
+                </div>
+                <div slot="right">
+                    <a href="/login" on:click="{() => authHeader.clear()}">
+                        Logout
+                    </a>
                 </div>
             </ChotaNav>
         </div>

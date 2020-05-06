@@ -1,23 +1,31 @@
 <script>
     import { Router, Route } from 'svelte-routing'
-    import { Layout, Global, Nav, ProtectedRoute } from './common/components'
+    import { Layout, Global, Nav, AuthGuard } from './common/components'
 
     import Home from './home/Home.svelte'
     import Login from './login/Login.svelte'
+    import Manage from './manage/Manage.svelte'
 
     export let url = ''
 </script>
 
 <Global>
-    <Router basepath="/" {url}>
+    <Router {url}>
         <Layout>
             <Nav />
             <Route path="login">
                 <Login />
             </Route>
-            <ProtectedRoute path="/">
-                <Home />
-            </ProtectedRoute>
+            <Route path="manage">
+                <AuthGuard librarianOnly>
+                    <Manage />
+                </AuthGuard>
+            </Route>
+            <Route path="/">
+                <AuthGuard>
+                    <Home />
+                </AuthGuard>
+            </Route>
         </Layout>
     </Router>
 

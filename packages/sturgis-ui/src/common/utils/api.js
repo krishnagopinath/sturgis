@@ -1,6 +1,7 @@
 import wretch from 'wretch'
 
 import safeJsonParse from './safe-json-parse'
+import { authHeader } from '../stores/auth-store'
 
 const parseJsonError = e => safeJsonParse(e.message, {})
 
@@ -33,6 +34,9 @@ function handleHttp401(err) {
     err.jsonError = parseJsonError(err)
     err.message = err.jsonError.message
 
+    // Not redirecting to login because `AuthGuard` component will take care of that!
+    authHeader.clear()
+
     throw err
 }
 
@@ -51,12 +55,10 @@ function handleHttp403(err) {
  * This is a function because we'd like this to executed everytime.
  */
 export default function apiHelper() {
-    const userId = window.localStorage.getItem('x-user-id')
-
     return wretch()
         .url(`/api/`)
         .headers({
-            'x-user-id': userId,
+            'x-user-id': authHeader.get(),
         })
         .catcher(400, handleHttp400)
         .catcher(403, handleHttp403)
