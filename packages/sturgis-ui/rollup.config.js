@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import dev from 'rollup-plugin-dev'
 import postcss from 'rollup-plugin-postcss'
+import path from 'path'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -51,8 +52,9 @@ export default {
         !production &&
             dev({
                 dirs: ['public'],
-                port: 5000,
+                port: 3000,
                 proxy: { '/api/*': 'http://localhost:12345/' },
+                spa: path.join('public', 'index.html'),
             }),
 
         // Watch the `public` directory and refresh the

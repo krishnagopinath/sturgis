@@ -6,9 +6,9 @@
 
 <script>
     import { Field, Input, Button } from 'svelte-chota'
-    import { replace } from 'svelte-spa-router'
+    import { navigate } from 'svelte-routing'
 
-    import { api } from '../common/utils/'
+    import { auth } from '../common/stores/'
 
     const users = [
         { name: 'Librarian', email: 'lib@sturgis.com' },
@@ -25,9 +25,8 @@
         error = false
         loading = true
         try {
-            const user = await api().url('user/login').post({ email }).json()
-            window.localStorage.setItem('x-user-id', user.id)
-            replace('/')
+            await auth.login(email)
+            navigate('/', { replace: true })
         } catch (err) {
             error = err.message
         } finally {
@@ -42,6 +41,7 @@
             type="email"
             bind:value="{email}"
             placeholder="doe@john.com"
+            disabled="{loading}"
             required
         />
     </Field>

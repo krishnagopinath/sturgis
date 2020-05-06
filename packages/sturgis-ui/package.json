@@ -21,7 +21,7 @@
     "dependencies": {
         "svelte-chota": "^1.7.1",
         "svelte-icons": "^2.1.0",
-        "svelte-spa-router": "^2.1.0",
+        "svelte-routing": "^1.4.2",
         "wretch": "^1.7.2"
     }
 }
