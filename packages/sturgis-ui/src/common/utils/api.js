@@ -1,7 +1,7 @@
 import wretch from 'wretch'
 
 import safeJsonParse from './safe-json-parse'
-import { authHeader } from '../stores/auth-store'
+import authHeader from '../stores/auth-header-store'
 
 const parseJsonError = e => safeJsonParse(e.message, {})
 

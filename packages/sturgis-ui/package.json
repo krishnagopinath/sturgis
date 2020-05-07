@@ -19,6 +19,7 @@
         "svelte": "^3.0.0"
     },
     "dependencies": {
+        "date-fns": "^2.13.0",
         "svelte-chota": "^1.7.1",
         "svelte-icons": "^2.1.0",
         "svelte-routing": "^1.4.2",

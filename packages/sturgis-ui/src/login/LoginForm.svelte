@@ -38,7 +38,7 @@
             disabled="{loading}"
             class="is-full-width"
         >
-            Submit
+            Login
         </Button>
     </div>
 </form>
