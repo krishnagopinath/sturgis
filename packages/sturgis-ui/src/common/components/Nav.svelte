@@ -14,6 +14,7 @@
     const activeRoute = getActiveRoute()
 </script>
 
+<!-- eslint-disable svelte3/ignore-styles -->
 <div class="nav-wrapper">
     {#if $activeRoute && $activeRoute.uri.includes('login')}
         <ChotaNav>
@@ -26,7 +27,7 @@
     {:else}
         <div use:links>
             <ChotaNav>
-                <a slot="left" href="/" class="brand">
+                <a slot="left" href="/" class="brand is-full-width">
                     <Logo />
                 </a>
                 <div slot="right">
