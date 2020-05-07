@@ -10,6 +10,8 @@
         "start": "concurrently 'npm:start-*'",
         "start-api": "lerna run --scope 'sturgis-api' start --stream",
         "start-ui": "lerna run --scope 'sturgis-ui' dev --stream",
+        "migrate-db": "lerna run --scope 'sturgis-api' migrate --stream",
+        "seed-db": "lerna run --scope 'sturgis-api' seed --stream",
         "test": "lerna run test --concurrency=1 --stream",
         "add": "lerna add",
         "format": "prettier --write --plugin-search-dir=. './packages/**/*'",
