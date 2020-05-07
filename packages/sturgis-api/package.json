@@ -4,7 +4,7 @@
     "description": "Node.js API for the Sturgis library system.",
     "main": "index.js",
     "scripts": {
-        "start": "cross-env PGDATABASE=sturgisdev nodemon --inspect ./src/server.js",
+        "start": "cross-env nodemon --inspect ./src/server.js",
         "test": "cross-env NODE_ENV=test PGDATABASE=sturgistest dotenv -- ava --verbose --serial",
         "migrate": "dotenv -- ley up",
         "seed": "dotenv -- node scripts/seed-database",
