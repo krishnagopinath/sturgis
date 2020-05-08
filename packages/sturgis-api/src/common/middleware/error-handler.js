@@ -6,12 +6,14 @@
  */
 exports.errorHandler = function errorHandler(err, req, res, next) {
     const { status, message } = err
+
+    const errorStatus = status || 500
     if (
         process.env.NODE_ENV === 'development' ||
         process.env.NODE_ENV === 'test'
     ) {
         // This is a programming error, which should be logged
-        if (!status) console.error(err)
+        if (errorStatus === 500) console.error(err)
 
         // Development error handler that prints stacktrace
         return res.status(status || 500).json({

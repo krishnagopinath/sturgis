@@ -24,7 +24,7 @@
     let itemToDelete = null
 </script>
 
-<div class="manage-container">
+<div>
     {#if openCreateModal}
         <AddBookModal
             bind:open="{openCreateModal}"

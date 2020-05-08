@@ -46,6 +46,7 @@
                     </td>
                     <td>
                         <button
+                            disabled="{!!book.checkout_id}"
                             class="button error icon-only"
                             on:click="{() => onDelete(book.id)}"
                         >

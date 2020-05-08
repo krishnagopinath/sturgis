@@ -21,17 +21,31 @@
     import { Message, Spinner } from '../common/components'
 
     import BookList from './BookList.svelte'
+    import CheckoutBookModal from './CheckoutBookModal.svelte'
+
+    let openCheckoutModal = false
+    let bookToCheckout = null
 </script>
 
-<div class="is-horizontal-align zero-margin">
+{#if openCheckoutModal}
+    <CheckoutBookModal
+        bind:open="{openCheckoutModal}"
+        book="{bookToCheckout}"
+        onCheckout="{book.checkout}"
+    />
+{/if}
 
+<div class="is-horizontal-align zero-margin">
     {#await book.getAvailable()}
         <Spinner />
     {:then}
         <div class="overflow-auto flex-container">
             <BookList
                 books="{$book}"
-                onCheckout="{id => alert('checkout' + id)}"
+                onCheckout="{id => {
+                    bookToCheckout = $book.find(b => b.id === id)
+                    openCheckoutModal = true
+                }}"
             />
         </div>
     {:catch}

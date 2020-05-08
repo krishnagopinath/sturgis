@@ -6,7 +6,6 @@
     }
     .nav-wrapper {
         padding-top: 2rem;
-        border-bottom: 1px solid var(--color-lightGrey);
     }
 </style>
 
