@@ -1,5 +1,5 @@
 <script>
-    import { Field, Input, Button } from 'svelte-chota'
+    import { Field, Spinner } from '../common/components/'
 
     let loading = false
     let error = false
@@ -20,25 +20,23 @@
     export let onSubmit
 </script>
 
-<form on:submit|preventDefault="{handleSubmit}">
-    <Field label="Email" {error}>
-        <Input
-            type="email"
-            bind:value="{email}"
-            placeholder="doe@john.com"
-            disabled="{loading}"
-            required
-        />
-    </Field>
-    <div class="margin-top-1-rem">
-        <Button
-            submit
-            primary
-            {loading}
-            disabled="{loading}"
-            class="is-full-width"
-        >
-            Login
-        </Button>
-    </div>
-</form>
+{#if loading}
+    <Spinner />
+{:else}
+    <form on:submit|preventDefault="{handleSubmit}">
+        <Field label="Email" {error}>
+            <input
+                type="email"
+                class:error
+                bind:value="{email}"
+                placeholder="doe@john.com"
+                required
+            />
+        </Field>
+        <div class="margin-top-1-rem">
+            <button type="submit" class="button primary is-full-width">
+                Login
+            </button>
+        </div>
+    </form>
+{/if}

@@ -18,8 +18,6 @@
 </style>
 
 <script>
-    import { Button } from 'svelte-chota'
-
     import { Message } from '../common/components'
 
     export let books = []
@@ -50,13 +48,12 @@
                 </div>
             </div>
             <footer>
-                <Button
-                    class="is-full-width"
-                    primary
+                <button
+                    class="button primary is-full-width"
                     on:click="{() => onCheckout(book.id)}"
                 >
                     Checkout
-                </Button>
+                </button>
             </footer>
         </div>
     {/each}

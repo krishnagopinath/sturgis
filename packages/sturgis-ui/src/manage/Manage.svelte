@@ -5,7 +5,6 @@
 
     .sink {
         padding-bottom: 1rem;
-        border-bottom: 1px solid var(--color-lightGrey);
     }
 
     .overflow-auto {
@@ -14,8 +13,6 @@
 </style>
 
 <script>
-    import { Button } from 'svelte-chota'
-
     import { book } from '../common/stores'
     import { Message, Spinner } from '../common/components'
     import AddBookModal from './AddBookModal.svelte'
@@ -47,9 +44,12 @@
     -->
     <div class="row is-horizontal-align stack">
         <div class="col sink text-right">
-            <Button primary on:click="{e => (openCreateModal = true)}">
+            <button
+                class="button primary"
+                on:click="{e => (openCreateModal = true)}"
+            >
                 Add Book
-            </Button>
+            </button>
         </div>
         <div class="col overflow-auto">
             {#await book.getAll()}

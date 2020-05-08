@@ -1,5 +1,10 @@
+<style>
+    .brand {
+        padding: 0;
+    }
+</style>
+
 <script>
-    import { Nav as ChotaNav } from 'svelte-chota'
     import { links } from 'svelte-routing'
     import { getActiveRoute } from '../utils/'
     import { isLibrarian, authHeader } from '../stores/'
@@ -9,29 +14,31 @@
 </script>
 
 {#if $activeRoute && $activeRoute.uri.includes('login')}
-    <ChotaNav>
-        <div slot="center" class="brand">
-            <Logo />
+    <nav class="nav">
+        <div class="nav-center">
+            <div class="brand">
+                <Logo />
+            </div>
 
             <h2>sturgis</h2>
         </div>
-    </ChotaNav>
+    </nav>
 {:else}
     <div use:links>
-        <ChotaNav>
-            <a slot="left" href="/" class="brand is-full-width">
-                <Logo />
-            </a>
-            <div slot="right">
+        <nav class="nav">
+            <div class="nav-left">
+                <a href="/" class="brand is-full-width">
+                    <Logo />
+                </a>
+            </div>
+            <div class="nav-right">
                 {#if $isLibrarian}
                     <a href="/manage">Manage</a>
                 {/if}
-            </div>
-            <div slot="right">
                 <a href="/login" on:click="{() => authHeader.clear()}">
                     Logout
                 </a>
             </div>
-        </ChotaNav>
+        </nav>
     </div>
 {/if}

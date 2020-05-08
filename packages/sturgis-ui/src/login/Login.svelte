@@ -1,6 +1,5 @@
 <script>
     import { navigate } from 'svelte-routing'
-    import { Row, Col } from 'svelte-chota'
     import { auth } from '../common/stores/'
 
     import LoginForm from './LoginForm.svelte'
@@ -18,8 +17,8 @@
     }
 </script>
 
-<Row class="is-horizontal-align">
-    <Col size="12" sizeMD="6">
+<div class="row is-horizontal-align">
+    <div class="col-12 col-6-md">
         <LoginForm onSubmit="{handleSubmit}" />
         <blockquote>
             Welcome to Sturgis library system! 📚
@@ -36,5 +35,5 @@
                 {/each}
             </ul>
         </blockquote>
-    </Col>
-</Row>
+    </div>
+</div>

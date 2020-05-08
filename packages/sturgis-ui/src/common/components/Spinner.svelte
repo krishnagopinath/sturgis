@@ -22,6 +22,13 @@
     }
 </style>
 
-<div class="is-full-screen is-full-width is-horizontal-align">
+<script>
+    export let fullScreen = false
+</script>
+
+<div
+    class:is-full-screen="{fullScreen}"
+    class="is-full-width is-horizontal-align"
+>
     <div class="loading-spinner"></div>
 </div>

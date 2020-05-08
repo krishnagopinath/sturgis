@@ -2,10 +2,14 @@
     .button-spacer {
         margin-top: 1rem;
     }
+
+    .book-form {
+        min-height: 18rem;
+    }
 </style>
 
 <script>
-    import { Button, Input, Field, Modal, Card } from 'svelte-chota'
+    import { Field, Spinner, Modal } from '../common/components'
 
     let loading = false
     let error = false
@@ -29,30 +33,30 @@
 </script>
 
 <Modal bind:open>
-    <Card>
-        <h4 slot="header">Add Book by ISBN</h4>
-        <form on:submit|preventDefault="{handleSubmit}">
-            <Field label="ISBN*" {error}>
-                <Input
-                    type="text"
-                    bind:value="{isbn}"
-                    placeholder="78234862684"
-                    disabled="{loading}"
-                    required
-                />
+    <div slot="header">
+        <h4>Add Book by ISBN</h4>
+    </div>
+    <div class="book-form">
+        {#if loading}
+            <Spinner />
+        {:else}
+            <form on:submit|preventDefault="{handleSubmit}">
+                <Field label="ISBN*" {error}>
+                    <input
+                        type="text"
+                        class:error
+                        bind:value="{isbn}"
+                        placeholder="78234862684"
+                        required
+                    />
 
-            </Field>
-            <div class="button-spacer">
-                <Button
-                    submit
-                    primary
-                    {loading}
-                    disabled="{loading}"
-                    class="is-full-width"
-                >
-                    Add
-                </Button>
-            </div>
-        </form>
-    </Card>
+                </Field>
+                <div class="button-spacer">
+                    <button type="submit" class="button primary is-full-width">
+                        Add
+                    </button>
+                </div>
+            </form>
+        {/if}
+    </div>
 </Modal>
