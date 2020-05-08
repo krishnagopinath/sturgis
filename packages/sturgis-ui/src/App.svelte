@@ -12,7 +12,9 @@
 <Global>
     <Router {url}>
         <Layout>
-            <Nav />
+            <div slot="nav">
+                <Nav />
+            </div>
             <Route path="login">
                 <Login />
             </Route>

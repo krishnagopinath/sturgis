@@ -26,9 +26,24 @@ exports.removeBook = async function removeBook(req, res, next) {
     }
 }
 
-exports.getBookList = async function getBookList(req, res, next) {
+/**
+ * Controller method that gets all the available books
+ */
+exports.getAvailableBooks = async function getAvailableBooks(req, res, next) {
     try {
         const books = await bookModel.getAllAvailable()
+        res.status(HttpStatus.OK).json(books)
+    } catch (error) {
+        next(error)
+    }
+}
+
+/**
+ * Controller method that gets all the books
+ */
+exports.getAllBooks = async function getAllBooks(req, res, next) {
+    try {
+        const books = await bookModel.getAll()
         res.status(HttpStatus.OK).json(books)
     } catch (error) {
         next(error)

@@ -1,9 +1,3 @@
-<style>
-    .nav-wrapper {
-        padding-top: 2rem;
-    }
-</style>
-
 <script>
     import { Nav as ChotaNav } from 'svelte-chota'
     import { links } from 'svelte-routing'
@@ -14,33 +8,30 @@
     const activeRoute = getActiveRoute()
 </script>
 
-<!-- eslint-disable svelte3/ignore-styles -->
-<div class="nav-wrapper">
-    {#if $activeRoute && $activeRoute.uri.includes('login')}
-        <ChotaNav>
-            <div slot="center" class="brand">
-                <Logo />
+{#if $activeRoute && $activeRoute.uri.includes('login')}
+    <ChotaNav>
+        <div slot="center" class="brand">
+            <Logo />
 
-                <h2>sturgis</h2>
+            <h2>sturgis</h2>
+        </div>
+    </ChotaNav>
+{:else}
+    <div use:links>
+        <ChotaNav>
+            <a slot="left" href="/" class="brand is-full-width">
+                <Logo />
+            </a>
+            <div slot="right">
+                {#if $isLibrarian}
+                    <a href="/manage">Manage</a>
+                {/if}
+            </div>
+            <div slot="right">
+                <a href="/login" on:click="{() => authHeader.clear()}">
+                    Logout
+                </a>
             </div>
         </ChotaNav>
-    {:else}
-        <div use:links>
-            <ChotaNav>
-                <a slot="left" href="/" class="brand is-full-width">
-                    <Logo />
-                </a>
-                <div slot="right">
-                    {#if $isLibrarian}
-                        <a href="/manage">Manage</a>
-                    {/if}
-                </div>
-                <div slot="right">
-                    <a href="/login" on:click="{() => authHeader.clear()}">
-                        Logout
-                    </a>
-                </div>
-            </ChotaNav>
-        </div>
-    {/if}
-</div>
+    </div>
+{/if}

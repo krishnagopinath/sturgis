@@ -22,6 +22,6 @@
     }
 </style>
 
-<div class="is-full-screen is-horizontal-align">
+<div class="is-full-screen is-full-width is-horizontal-align">
     <div class="loading-spinner"></div>
 </div>

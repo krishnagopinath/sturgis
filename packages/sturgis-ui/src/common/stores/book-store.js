@@ -12,6 +12,29 @@ function createBookStore() {
             const books = await api().url('book').get().json()
             set(books)
         },
+        /**
+         * Get available books, removes duplicates
+         */
+        async getAvailable() {
+            const rawBooks = await api().url('book/available').get().json()
+
+            const books = rawBooks.reduce((acc, b) => {
+                // Isbn already exists in collection, increment count
+                if (acc[b.isbn]) {
+                    acc[b.isbn] = Object.assign({}, acc[b.isbn], {
+                        copies: acc[b.isbn].copies + 1,
+                    })
+                }
+                // New Isbn, add to collection
+                else {
+                    acc[b.isbn] = Object.assign({}, b, { copies: 1 })
+                }
+
+                return acc
+            }, {})
+
+            set(Object.values(books))
+        },
         async addByIsbn(isbn) {
             const book = await api().url('book').post({ isbn }).json()
 

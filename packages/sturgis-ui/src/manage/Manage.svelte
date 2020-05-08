@@ -1,8 +1,4 @@
 <style>
-    .manage-container {
-        padding: 2rem;
-    }
-
     .stack {
         flex-direction: column;
     }
@@ -24,7 +20,7 @@
     import { Message, Spinner } from '../common/components'
     import AddBookModal from './AddBookModal.svelte'
     import DeleteBookModal from './DeleteBookModal.svelte'
-    import BookGrid from './BookGrid.svelte'
+    import BookTable from './BookTable.svelte'
 
     let openCreateModal = false
     let openDeleteModal = false
@@ -59,7 +55,7 @@
             {#await book.getAll()}
                 <Spinner />
             {:then}
-                <BookGrid
+                <BookTable
                     books="{$book}"
                     onDelete="{id => {
                         itemToDelete = id

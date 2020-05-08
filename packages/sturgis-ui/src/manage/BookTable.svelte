@@ -41,7 +41,9 @@
                     <td>{book.name}</td>
                     <td>{book.author}</td>
                     <!-- TODO: Check for date edge cases -->
-                    <td>{format(new Date(book.created_at), 'MM/dd/yyyy')}</td>
+                    <td>
+                        {format(new Date(book.created_at), 'MM/dd/yyyy hh:mm:ss a')}
+                    </td>
                     <td>
                         <button
                             class="button error icon-only"

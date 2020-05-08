@@ -46,6 +46,19 @@ module.exports = {
     },
 
     /**
+     * Gets all books with checkouts, if available
+     */
+    getAll() {
+        return sql`
+            select 
+                books.*, checkouts.id as checkout_id 
+            from books
+            left join checkouts on checkouts.book_id = books.id
+            order by name
+        `
+    },
+
+    /**
      * Get all available books (that have not been checked out)
      */
     getAllAvailable() {

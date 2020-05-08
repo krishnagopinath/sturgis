@@ -6,11 +6,17 @@ const {
     validateBookAdd,
     validateBookRemove,
 } = require('./book-middleware')
-const { addBook, removeBook, getBookList } = require('./book-actions')
+const {
+    addBook,
+    removeBook,
+    getAvailableBooks,
+    getAllBooks,
+} = require('./book-actions')
 
 module.exports = Router()
-    .get('/', getBookList)
+    .get('/available', getAvailableBooks)
     // Librarian only routes
     .use(librarianOnly)
+    .get('/', librarianOnly, getAllBooks)
     .post('/', validateBookAdd, addBook)
     .delete('/:id', doesBookExist, validateBookRemove, removeBook)

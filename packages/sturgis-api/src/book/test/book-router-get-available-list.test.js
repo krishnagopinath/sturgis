@@ -14,7 +14,7 @@ testDbSetup()
 testUserSetup()
 testBookSetup()
 
-testApiSetup('/api/book/')
+testApiSetup('/api/book/available')
 
 test('(200) empty list if no available books', async t => {
     // create checkouts for all the books
